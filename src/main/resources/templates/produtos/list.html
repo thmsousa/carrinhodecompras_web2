@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Catálogo de Produtos')}"></head>
+<body class="bg-light">
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<div class="container pb-5">
+    <div th:if="${mensagem}" class="position-fixed bottom-0 end-0 p-4" style="z-index: 2000;">
+        <div class="alert bg-dark text-white border-0 shadow-lg fade show d-flex align-items-center rounded-4 p-3 mb-0" role="alert" style="min-width: 350px;">
+            <div class="bg-success rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 45px; height: 45px;">
+                <i class="bi bi-cart-check-fill text-white fs-5"></i>
+            </div>
+            <div class="flex-grow-1 pe-3">
+                <strong class="d-block text-success small text-uppercase fw-bold" style="letter-spacing: 1px;">Carrinho</strong>
+                <span class="fw-medium text-white" th:text="${mensagem}"></span>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="fw-bold m-0 text-dark">Catálogo de Produtos</h2>
+        <a th:href="@{/vendas/carrinho}" class="btn btn-success rounded-pill px-4 shadow-sm position-relative">
+            <i class="bi bi-cart3 me-2"></i> Ver Carrinho
+            <span th:if="${session.venda_sessao != null and !session.venda_sessao.itens.isEmpty()}"
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white shadow-sm"
+                  th:text="${#lists.size(session.venda_sessao.itens)}">0</span>
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-5">
+        <div class="card-body p-2">
+            <form th:action="@{/produtos/lista}" method="get" class="row g-0 align-items-center">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text border-0 bg-transparent ps-3">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" name="descricao" class="form-control border-0 bg-transparent shadow-none"
+                               placeholder="O que você está procurando hoje?" th:value="${param.descricao}">
+                    </div>
+                </div>
+                <div class="col-auto pe-2">
+                    <button type="submit" class="btn btn-dark rounded-pill px-4 fw-bold text-white">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" th:each="p : ${produtos}">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                <div style="height: 220px; overflow: hidden; background-color: #f8f9fa;" class="d-flex align-items-center justify-content-center">
+                    <img th:if="${p.imagem != null and !p.imagem.empty}"
+                         th:src="@{'/img/' + ${p.imagem}}"
+                         class="card-img-top w-100 h-100 p-3"
+                         style="object-fit: contain;"
+                         th:alt="${p.descricao}">
+                    <div th:unless="${p.imagem != null and !p.imagem.empty}" class="text-center">
+                        <i class="bi bi-image fs-1 text-muted opacity-25"></i>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 text-center">
+                    <div class="badge bg-light text-muted rounded-pill mb-2 px-3">#[[${p.id}]]</div>
+                    <h5 class="card-title fw-bold mb-3 text-truncate" th:text="${p.descricao}"></h5>
+                    <div class="bg-light py-3 rounded-4 mb-4">
+                        <span class="h3 fw-bold text-success mb-0"
+                              th:text="'R$ ' + ${#numbers.formatDecimal(p.valor, 1, 'POINT', 2, 'COMMA')}"></span>
+                    </div>
+                    <form th:action="@{/produtos/adicionar}" method="post">
+                        <input type="hidden" name="produto.id" th:value="${p.id}">
+                        <div class="input-group border rounded-3 overflow-hidden shadow-sm">
+                            <span class="input-group-text border-0 bg-white small fw-bold text-muted ps-3">QTD</span>
+                            <input type="number" name="quantidade" value="1" min="1"
+                                   class="form-control border-0 bg-white text-center fw-bold shadow-none">
+                            <button class="btn btn-dark px-4 border-0 fw-bold" type="submit">Adicionar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

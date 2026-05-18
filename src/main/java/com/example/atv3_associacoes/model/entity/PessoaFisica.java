@@ -1,0 +1,38 @@
+package com.example.atv3_associacoes.model.entity;
+
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
+
+@Entity
+@DiscriminatorValue("PF")
+public class PessoaFisica extends Pessoa {
+    @NotBlank(message = "O nome é obrigatório.")
+    private String nome;
+
+    @NotBlank(message = "O CPF é obrigatório.")
+    @CPF(message = "CPF em formato inválido.")
+    private String cpf;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    @Override
+    public String getNomeExibicao() {
+        return nome;
+    }
+}
