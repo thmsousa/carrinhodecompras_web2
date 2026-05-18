@@ -4,6 +4,7 @@ import com.example.atv3_associacoes.model.entity.Produto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,4 +26,14 @@ public class ProdutoRepository {
     public Produto findById(Long id) {
         return em.find(Produto.class, id);
     }
+
+    @Transactional
+    public void save(Produto produto) {
+        if (produto.getId() == null) {
+            em.persist(produto);
+        } else {
+            em.merge(produto);
+        }
+    }
+
 }

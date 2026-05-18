@@ -1,15 +1,17 @@
 package com.example.atv3_associacoes.controller;
 
 import com.example.atv3_associacoes.model.entity.Pessoa;
+import com.example.atv3_associacoes.model.entity.PessoaFisica;
+import com.example.atv3_associacoes.model.entity.PessoaJuridica;
 import com.example.atv3_associacoes.model.repository.PessoaRepository;
 import com.example.atv3_associacoes.model.repository.VendaRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -41,4 +43,36 @@ public class PessoaController {
         model.addAttribute("vendas", vendaRepository.findByCliente(id, null));
         return "vendas/list"; // Reutiliza a página de listagem de vendas
     }
+
+    @GetMapping("/form-pf")
+    public String formPf(PessoaFisica pessoaFisica) {
+        return "clientes/form-pf";
+    }
+
+    @PostMapping("/save-pf")
+    public String savePf(@Valid PessoaFisica pessoa, BindingResult result, RedirectAttributes attr) {
+        if (result.hasErrors()) {
+            return "clientes/form-pf";
+        }
+        repository.save(pessoa);
+        attr.addFlashAttribute("mensagemSucesso", "Cliente PF salvo!");
+        return "redirect:/clientes/lista";
+    }
+
+    @GetMapping("/form-pj")
+    public String formPj(PessoaJuridica pessoaJuridica) {
+        return "clientes/form-pj";
+    }
+
+    @PostMapping("/save-pj")
+    public String savePj(@Valid PessoaJuridica pessoa, BindingResult result, RedirectAttributes attr) {
+        if (result.hasErrors()) {
+            return "clientes/form-pj";
+        }
+        repository.save(pessoa);
+        attr.addFlashAttribute("mensagemSucesso", "Cliente Jurídico salvo com sucesso!");
+        return "redirect:/clientes/lista";
+    }
+
+
 }

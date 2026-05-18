@@ -1,6 +1,8 @@
 package com.example.atv3_associacoes.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,11 +12,13 @@ public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull(message = "A quantidade é obrigatória")
+    @Positive(message = "A quantidade deve ser maior que zero")
     private Double quantidade;
 
     @ManyToOne
     private Produto produto;
-
     @ManyToOne
     private Venda venda;
 

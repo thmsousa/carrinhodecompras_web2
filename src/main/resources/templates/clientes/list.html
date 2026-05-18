@@ -13,6 +13,15 @@
                 </h4>
             </div>
 
+            <div class="mb-3">
+                <a th:href="@{/clientes/form-pf}" class="btn btn-success">
+                    <i class="bi bi-person-plus"></i> Nova Pessoa Física
+                </a>
+                <a th:href="@{/clientes/form-pj}" class="btn btn-info">
+                    <i class="bi bi-building-plus"></i> Nova Pessoa Jurídica
+                </a>
+            </div>
+
             <form th:action="@{/clientes/lista}" method="get" class="d-flex gap-2">
                 <input type="text" name="nome" class="form-control border-0 bg-light rounded-pill px-3 shadow-none" placeholder="Buscar por nome..." th:value="${param.nome}">
                 <button type="submit" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm">Filtrar</button>
@@ -27,7 +36,7 @@
                         <th class="ps-4">ID</th>
                         <th>Nome / Razão Social</th>
                         <th>E-mail</th>
-                        <th>Tipo</th>
+                        <th>Tipo / Documento</th>
                         <th class="text-center pe-4">Ações</th>
                     </tr>
                     </thead>
@@ -37,8 +46,17 @@
                         <td class="fw-bold text-dark" th:text="${c.nomeExibicao}"></td>
                         <td th:text="${c.email}"></td>
                         <td>
-                            <span th:if="${c instanceof T(com.example.atv3_associacoes.model.entity.PessoaFisica)}" class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-3">PF</span>
-                            <span th:if="${c instanceof T(com.example.atv3_associacoes.model.entity.PessoaJuridica)}" class="badge rounded-pill bg-dark-subtle text-dark border border-dark-subtle px-3">PJ</span>
+                            <div th:if="${c instanceof T(com.example.atv3_associacoes.model.entity.PessoaFisica)}">
+                                <span class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-3">PF</span>
+                                <small class="d-block text-muted"
+                                       th:text="${((T(com.example.atv3_associacoes.model.entity.PessoaFisica)) c).cpf}"></small>
+                            </div>
+
+                            <div th:if="${c instanceof T(com.example.atv3_associacoes.model.entity.PessoaJuridica)}">
+                                <span class="badge rounded-pill bg-dark-subtle text-dark border border-dark-subtle px-3">PJ</span>
+                                <small class="d-block text-muted"
+                                       th:text="${((T(com.example.atv3_associacoes.model.entity.PessoaJuridica)) c).cnpj}"></small>
+                            </div>
                         </td>
                         <td class="text-center pe-4">
                             <a class="btn btn-white btn-sm rounded-pill px-3 fw-bold text-success border shadow-sm" th:href="@{/clientes/{id}/vendas(id=${c.id})}">

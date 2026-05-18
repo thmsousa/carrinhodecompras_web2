@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Cadastro de Produto')}"></head>
+<body class="bg-light">
+<header th:replace="~{fragments/layout :: header}"></header>
+<main class="container">
+    <div class="card shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <h4 class="fw-bold mb-4">Novo Produto</h4>
+            <form th:action="@{/produtos/save}" th:object="${produto}" method="post">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Descrição</label>
+                    <input type="text" th:field="*{descricao}" class="form-control" th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'">
+                    <div class="invalid-feedback" th:errors="*{descricao}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Valor</label>
+                    <input type="number" step="0.01" th:field="*{valor}" class="form-control" th:classappend="${#fields.hasErrors('valor')} ? 'is-invalid'">
+                    <div class="invalid-feedback" th:errors="*{valor}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nome do Arquivo da Imagem</label>
+                    <input type="text" th:field="*{imagem}" class="form-control" th:classappend="${#fields.hasErrors('imagem')} ? 'is-invalid'">
+                    <div class="invalid-feedback" th:errors="*{imagem}"></div>
+                </div>
+                <button type="submit" class="btn btn-success rounded-pill px-4">Salvar Produto</button>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>
