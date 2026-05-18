@@ -25,17 +25,13 @@
                     </div>
                     <div class="mb-3">
                         <label class="small text-muted text-uppercase fw-bold d-block">Documento</label>
-
                         <div th:if="${venda.cliente instanceof T(com.example.atv3_associacoes.model.entity.PessoaFisica)}">
                             <span class="badge bg-success-subtle text-success border border-success-subtle mb-1">Pessoa Física</span>
-                            <div class="text-dark fw-medium"
-                                 th:text="'CPF: ' + ${((T(com.example.atv3_associacoes.model.entity.PessoaFisica)) venda.cliente).cpf}"></div>
+                            <div class="text-dark fw-medium" th:text="'CPF: ' + ${venda.cliente.cpf}"></div>
                         </div>
-
                         <div th:if="${venda.cliente instanceof T(com.example.atv3_associacoes.model.entity.PessoaJuridica)}">
                             <span class="badge bg-dark-subtle text-dark border border-dark-subtle mb-1">Pessoa Jurídica</span>
-                            <div class="text-dark fw-medium"
-                                 th:text="'CNPJ: ' + ${((T(com.example.atv3_associacoes.model.entity.PessoaJuridica)) venda.cliente).cnpj}"></div>
+                            <div class="text-dark fw-medium" th:text="'CNPJ: ' + ${venda.cliente.cnpj}"></div>
                         </div>
                     </div>
                     <div class="mt-4 p-3 bg-light rounded-3 border-start border-success border-4">
