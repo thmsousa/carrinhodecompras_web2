@@ -108,7 +108,6 @@ public class VendaController {
             // Configura os dados finais da venda
             vendaSessao.setCliente(cliente);
             vendaSessao.setData(LocalDateTime.now());
-
             // Persiste a venda e seus itens no banco
             repository.save(vendaSessao);
 

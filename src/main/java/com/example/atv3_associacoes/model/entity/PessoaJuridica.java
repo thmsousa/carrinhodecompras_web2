@@ -12,7 +12,7 @@ public class PessoaJuridica extends Pessoa {
     private String razaoSocial;
 
     @NotBlank(message = "O CNPJ é obrigatório.")
-    @CNPJ(message = "CNPJ em formato inválido.") // Valida se o CNPJ é real
+    @CNPJ(message = "CNPJ em formato inválido.")
     private String cnpj;
 
     public String getRazaoSocial() {
