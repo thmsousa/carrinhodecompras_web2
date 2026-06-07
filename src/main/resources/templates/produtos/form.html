@@ -3,30 +3,86 @@
 <head th:replace="~{fragments/layout :: head('Cadastro de Produto')}"></head>
 <body class="bg-light">
 <header th:replace="~{fragments/layout :: header}"></header>
-<main class="container">
-    <div class="card shadow-sm rounded-4">
-        <div class="card-body p-4">
-            <h4 class="fw-bold mb-4">Novo Produto</h4>
-            <form th:action="@{/produtos/save}" th:object="${produto}" method="post">
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Descrição</label>
-                    <input type="text" th:field="*{descricao}" class="form-control" th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'">
-                    <div class="invalid-feedback" th:errors="*{descricao}"></div>
+
+<main class="container pb-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h3 class="fw-bold m-0 text-dark">Cadastro de Produto</h3>
+                    <p class="text-muted small m-0">Preencha os dados abaixo para cadastrar um novo item no catálogo</p>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Valor</label>
-                    <input type="number" step="0.01" th:field="*{valor}" class="form-control" th:classappend="${#fields.hasErrors('valor')} ? 'is-invalid'">
-                    <div class="invalid-feedback" th:errors="*{valor}"></div>
+                <a th:href="@{/produtos/lista}" class="btn btn-secondary-custom py-2 px-3 d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-arrow-left"></i> Voltar
+                </a>
+            </div>
+
+            <div class="card card-premium">
+                <div class="card-body p-4 p-md-5">
+                    <form th:action="@{/produtos/save}" th:object="${produto}" method="post">
+                        
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-muted text-uppercase mb-2">Descrição do Produto</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 border-0 ps-3">
+                                    <i class="bi bi-tag text-muted"></i>
+                                </span>
+                                <input type="text" th:field="*{descricao}" 
+                                       class="form-control form-control-custom border-start-0 ps-2" 
+                                       placeholder="Ex: Monitor Gamer LG UltraWide"
+                                       th:classappend="${#fields.hasErrors('descricao')} ? 'is-invalid'"
+                                       style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                <div class="invalid-feedback" th:errors="*{descricao}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Preço de Venda (R$)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 border-0 ps-3 fw-bold text-muted" style="font-size: 0.85rem;">
+                                        R$
+                                    </span>
+                                    <input type="number" step="0.01" th:field="*{valor}" 
+                                           class="form-control form-control-custom border-start-0 ps-2" 
+                                           placeholder="0.00"
+                                           th:classappend="${#fields.hasErrors('valor')} ? 'is-invalid'"
+                                           style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                    <div class="invalid-feedback" th:errors="*{valor}"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Nome da Imagem</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 border-0 ps-3">
+                                        <i class="bi bi-image text-muted"></i>
+                                    </span>
+                                    <input type="text" th:field="*{imagem}" 
+                                           class="form-control form-control-custom border-start-0 ps-2" 
+                                           placeholder="Ex: monitorlg_24pol.jpg"
+                                           th:classappend="${#fields.hasErrors('imagem')} ? 'is-invalid'"
+                                           style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                    <div class="invalid-feedback" th:errors="*{imagem}"></div>
+                                </div>
+                                <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">Para associar imagens salvas na pasta /static/img/</small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-end border-top pt-4 mt-4">
+                            <a th:href="@{/produtos/lista}" class="btn btn-secondary-custom px-4 py-2">Cancelar</a>
+                            <button type="submit" class="btn btn-primary-custom px-4 py-2">
+                                <i class="bi bi-check-circle-fill me-1"></i> Salvar Produto
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Nome do Arquivo da Imagem</label>
-                    <input type="text" th:field="*{imagem}" class="form-control" th:classappend="${#fields.hasErrors('imagem')} ? 'is-invalid'">
-                    <div class="invalid-feedback" th:errors="*{imagem}"></div>
-                </div>
-                <button type="submit" class="btn btn-success rounded-pill px-4">Salvar Produto</button>
-            </form>
+            </div>
         </div>
     </div>
 </main>
+
+<div th:replace="~{fragments/layout :: scripts}"></div>
 </body>
 </html>
