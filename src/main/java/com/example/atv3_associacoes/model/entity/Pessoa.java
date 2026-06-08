@@ -3,7 +3,6 @@ package com.example.atv3_associacoes.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,6 +23,15 @@ public abstract class Pessoa implements Serializable {
 
     @OneToMany(mappedBy = "cliente")
     private List<Venda> vendas;
+
+    // Adicione esse atributo dentro da classe abstrata Pessoa
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario; }
 
     public Long getId() {
         return id;
