@@ -53,6 +53,7 @@
                     <th style="width: 80px;" class="text-center">ID</th>
                     <th>Nome / Razão Social</th>
                     <th>E-mail</th>
+                    <th>Telefone</th>
                     <th>Tipo / Documento</th>
                     <th class="text-center" style="width: 150px;">Ações</th>
                 </tr>
@@ -66,8 +67,12 @@
                         <span class="fw-bold text-dark d-block" th:text="${c.nomeExibicao}"></span>
                     </td>
                     <td>
-                            <span th:text="${c.email != null and !c.email.empty} ? ${c.email} : 'Não informado'"
-                                  th:classappend="${c.email == null or c.email.empty} ? 'text-muted small italic'"></span>
+                        <span th:text="${c.email != null and !c.email.empty} ? ${c.email} : 'Não informado'"
+                              th:classappend="${c.email == null or c.email.empty} ? 'text-muted small italic'"></span>
+                    </td>
+                    <td>
+                        <span th:text="${c.telefone != null and !c.telefone.empty} ? ${c.telefone} : 'Não informado'"
+                              th:classappend="${c.telefone == null or c.telefone.empty} ? 'text-muted small italic'"></span>
                     </td>
                     <td>
                         <div>
@@ -87,7 +92,7 @@
                 </tr>
 
                 <tr th:if="${#lists.isEmpty(clientes)}">
-                    <td colspan="5" class="text-center py-5 text-muted">
+                    <td colspan="6" class="text-center py-5 text-muted">
                         <i class="bi bi-people display-4 d-block mb-3 opacity-25"></i>
                         <h5 class="fw-bold text-dark">Nenhum cliente cadastrado</h5>
                         <p class="small text-muted">Não encontramos clientes correspondentes ou ainda não há cadastros.</p>

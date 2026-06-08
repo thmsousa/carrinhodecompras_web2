@@ -42,6 +42,14 @@
                         </div>
                     </div>
 
+                    <div class="mb-4">
+                        <small class="small text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Telefone de Contato</small>
+                        <span class="text-dark fw-semibold small">
+                            <i class="bi bi-telephone text-muted me-1"></i>
+                            <span th:text="${venda.cliente.telefone != null and !venda.cliente.telefone.empty} ? ${venda.cliente.telefone} : 'Não informado'"></span>
+                        </span>
+                    </div>
+
                     <div class="mt-4 p-3 bg-light rounded-4 border-start border-success border-4 shadow-sm">
                         <small class="small text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Data e Hora da Compra</small>
                         <span class="text-dark fw-bold" th:text="${#temporals.format(venda.data, 'dd/MM/yyyy HH:mm')}"></span>
