@@ -14,8 +14,8 @@ public class Usuario implements Serializable, UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String login;
-    private String password;
+    private String usuario;
+    private String senha;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -34,12 +34,12 @@ public class Usuario implements Serializable, UserDetails {
 
     @Override
     public String getPassword() {
-        return this.password;
+        return this.senha;
     }
 
     @Override
     public String getUsername() {
-        return this.login;
+        return this.usuario;
     }
 
     @Override
@@ -54,10 +54,11 @@ public class Usuario implements Serializable, UserDetails {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getLogin() { return login; }
-    public void setLogin(String login) { this.login = login; }
+    public String getUsuario() { return usuario; }
+    public void setUsuario(String usuario) { this.usuario = usuario; }
 
-    public void setPassword(String password) { this.password = password; }
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
 
     public List<Role> getRoles() { return roles; }
     public void setRoles(List<Role> roles) { this.roles = roles; }

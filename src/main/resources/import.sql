@@ -1,8 +1,8 @@
 INSERT INTO role (id, nome) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO role (id, nome) VALUES (2, 'ROLE_USER');
 
-INSERT INTO usuario (id, login, password) VALUES (1, 'admin', '$2a$10$R9nEByG6m4Mymm8H4P08f.6SjC1Tidb6Bsc6X7qG7lP59lYbyuD2e');
-INSERT INTO usuario (id, login, password) VALUES (2, 'thiago', '$2a$10$w0X2X8K7z3gQby7fA55GduR47nF4Sfe6p8HhG9.NCOgH85a.LqWp2');
+INSERT INTO usuario (id, usuario, senha) VALUES (1, 'admin', '$2a$10$tbs4UMB6IouZDQjyy/lE/OArOO1iafF.oXLuAEMS5LIgi2Lxr17yu');
+INSERT INTO usuario (id, usuario, senha) VALUES (2, 'thiago', '$2a$10$57O3OKPPf/cjGhhSmfrgUuj8ofq4UOT.KDYMNYIdF4QW5IwYZgpi6');
 
 INSERT INTO usuario_roles (usuario_id, role_id) VALUES (1, 1);
 INSERT INTO usuario_roles (usuario_id, role_id) VALUES (2, 2);

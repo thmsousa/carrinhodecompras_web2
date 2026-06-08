@@ -18,16 +18,15 @@ public class UsuarioDetailsConfig implements UserDetailsService {
     private UsuarioRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        Usuario usuario = repository.usuario(login);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Usuario usuario = repository.findByUsuario(username);
         if (usuario == null) {
-            throw new UsernameNotFoundException("usuário não encontrado!");
+            throw new UsernameNotFoundException("Usuário não encontrado!");
         }
 
-        // Retorna o objeto User padrão do Spring Security alimentado pelo seu banco de dados
         return new User(
-                usuario.getLogin(),
-                usuario.getPassword(),
+                usuario.getUsuario(),
+                usuario.getSenha(),
                 true, true, true, true,
                 usuario.getAuthorities()
         );

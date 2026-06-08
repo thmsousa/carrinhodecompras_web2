@@ -25,6 +25,11 @@
             <span class="small fw-semibold">Usuário ou senha inválidos!</span>
         </div>
 
+        <div th:if="${mensagemSucesso}" class="alert alert-success border-0 py-3 mb-4 d-flex align-items-center gap-2">
+            <i class="bi bi-check-circle-fill fs-5 text-success"></i>
+            <span class="small fw-semibold" th:text="${mensagemSucesso}"></span>
+        </div>
+
         <form th:action="@{/login}" method="post">
             <div class="mb-3">
                 <label class="form-label small fw-bold text-muted text-uppercase mb-2">Usuário</label>
@@ -62,6 +67,20 @@
                 </button>
             </div>
         </form>
+
+        <hr class="my-4">
+
+        <div class="text-center">
+            <p class="small text-muted mb-2">Não possui conta? Cadastre-se:</p>
+            <div class="d-flex gap-2 justify-content-center">
+                <a th:href="@{/cadastro/pf}" class="btn btn-outline-success btn-sm px-3 py-2">
+                    <i class="bi bi-person-plus me-1"></i> Pessoa Física
+                </a>
+                <a th:href="@{/cadastro/pj}" class="btn btn-outline-primary btn-sm px-3 py-2">
+                    <i class="bi bi-building-add me-1"></i> Pessoa Jurídica
+                </a>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts Bootstrap -->

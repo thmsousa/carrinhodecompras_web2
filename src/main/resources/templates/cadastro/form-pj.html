@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Cadastro de Pessoa Jurídica')}"></head>
+<body class="login-page">
+
+<div class="login-card" style="max-width: 560px;">
+    <div class="text-center mb-4">
+        <div class="bg-success-subtle text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 60px; height: 60px;">
+            <i class="bi bi-building-add fs-2"></i>
+        </div>
+        <h3 class="fw-bold m-0">Cadastro - Pessoa Jurídica</h3>
+        <p class="text-muted small mt-1">Preencha os dados da empresa para criar uma conta</p>
+    </div>
+
+    <form th:action="@{/cadastro/save-pj}" th:object="${pessoaJuridica}" method="post">
+
+        <div class="mb-3">
+            <label class="form-label small fw-bold text-muted text-uppercase mb-2">Razão Social</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0 border-0 ps-3">
+                    <i class="bi bi-building text-muted"></i>
+                </span>
+                <input type="text" th:field="*{razaoSocial}"
+                       class="form-control form-control-custom border-start-0 ps-2"
+                       placeholder="Ex: ACME Corporation Ltda"
+                       th:classappend="${#fields.hasErrors('razaoSocial')} ? 'is-invalid'"
+                       style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                <div class="invalid-feedback" th:errors="*{razaoSocial}"></div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <label class="form-label small fw-bold text-muted text-uppercase mb-2">CNPJ</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 border-0 ps-3">
+                        <i class="bi bi-card-heading text-muted"></i>
+                    </span>
+                    <input type="text" th:field="*{cnpj}"
+                           class="form-control form-control-custom border-start-0 ps-2"
+                           placeholder="00.000.000/0000-00"
+                           th:classappend="${#fields.hasErrors('cnpj')} ? 'is-invalid'"
+                           style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                    <div class="invalid-feedback" th:errors="*{cnpj}"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Telefone</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 border-0 ps-3">
+                        <i class="bi bi-telephone text-muted"></i>
+                    </span>
+                    <input type="text" th:field="*{telefone}"
+                           class="form-control form-control-custom border-start-0 ps-2"
+                           placeholder="(00) 0000-0000"
+                           th:classappend="${#fields.hasErrors('telefone')} ? 'is-invalid'"
+                           style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                    <div class="invalid-feedback" th:errors="*{telefone}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label small fw-bold text-muted text-uppercase mb-2">E-mail Corporativo</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0 border-0 ps-3">
+                    <i class="bi bi-envelope text-muted"></i>
+                </span>
+                <input type="email" th:field="*{email}"
+                       class="form-control form-control-custom border-start-0 ps-2"
+                       placeholder="contato@empresa.com"
+                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                       style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                <div class="invalid-feedback" th:errors="*{email}"></div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+        <p class="small fw-bold text-muted text-uppercase mb-3">Dados de Acesso</p>
+
+        <div class="mb-3">
+            <label class="form-label small fw-bold text-muted text-uppercase mb-2">Usuário</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0 border-0 ps-3">
+                    <i class="bi bi-person-badge text-muted"></i>
+                </span>
+                <input type="text" name="loginUsuario"
+                       class="form-control form-control-custom border-start-0 ps-2"
+                       placeholder="Escolha um nome de usuário"
+                       required
+                       style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label small fw-bold text-muted text-uppercase mb-2">Senha</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0 border-0 ps-3">
+                    <i class="bi bi-lock text-muted"></i>
+                </span>
+                <input type="password" name="senhaUsuario"
+                       class="form-control form-control-custom border-start-0 ps-2"
+                       placeholder="••••••••"
+                       required
+                       style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+            </div>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary-custom w-100 py-3">
+                <i class="bi bi-check-circle-fill me-1"></i> Cadastrar
+            </button>
+        </div>
+
+        <div class="text-center mt-3">
+            <a th:href="@{/login}" class="small text-muted">Já possui conta? Faça login</a>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
