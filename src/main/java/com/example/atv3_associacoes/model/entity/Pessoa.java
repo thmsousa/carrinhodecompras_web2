@@ -29,9 +29,31 @@ public abstract class Pessoa implements Serializable {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    public Usuario getUsuario() { return usuario; }
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
     public void setUsuario(Usuario usuario) {
-        this.usuario = usuario; }
+        this.usuario = usuario;
+    }
+
+    // Retorna se é Física ou Jurídica baseando-se na instância real
+    public String getTipoDocumentoLabel() {
+        if (this instanceof PessoaFisica || this.getClass().getSimpleName().contains("PessoaFisica")) {
+            return "PF";
+        }
+        return "PJ";
+    }
+
+    // Retorna o CPF ou o CNPJ dinamicamente
+    public String getNumeroDocumento() {
+        if (this instanceof PessoaFisica) {
+            return "CPF: " + ((PessoaFisica) this).getCpf();
+        } else if (this instanceof PessoaJuridica) {
+            return "CNPJ: " + ((PessoaJuridica) this).getCnpj();
+        }
+        return "";
+    }
 
     public Long getId() {
         return id;

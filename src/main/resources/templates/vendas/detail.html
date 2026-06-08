@@ -5,7 +5,6 @@
 <header th:replace="~{fragments/layout :: header}"></header>
 
 <div class="container pb-5">
-    <!-- Cabeçalho de Detalhes -->
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
             <h2 class="fw-bold m-0 text-dark">
@@ -19,7 +18,6 @@
     </div>
 
     <div class="row g-4">
-        <!-- Card do Cliente -->
         <div class="col-lg-4">
             <div class="card card-premium h-100">
                 <div class="card-body p-4">
@@ -27,24 +25,23 @@
                         <i class="bi bi-person-circle text-success me-2"></i>
                         Informações do Cliente
                     </h5>
-                    
+
                     <div class="mb-4">
                         <small class="small text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Nome / Razão Social</small>
                         <span class="fw-bold text-dark fs-5" th:text="${venda.cliente.nomeExibicao}"></span>
                     </div>
-                    
+
                     <div class="mb-4">
                         <small class="small text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Tipo de Documento</small>
-                        <div th:if="${venda.cliente instanceof T(com.example.atv3_associacoes.model.entity.PessoaFisica)}">
-                            <span class="badge badge-custom badge-pf mb-2">Pessoa Física</span>
-                            <div class="text-dark fw-bold small mt-1" th:text="'CPF: ' + ${venda.cliente.cpf}"></div>
-                        </div>
-                        <div th:if="${venda.cliente instanceof T(com.example.atv3_associacoes.model.entity.PessoaJuridica)}">
-                            <span class="badge badge-custom badge-pj mb-2">Pessoa Jurídica</span>
-                            <div class="text-dark fw-bold small mt-1" th:text="'CNPJ: ' + ${venda.cliente.cnpj}"></div>
+                        <div>
+                            <span class="badge badge-custom mb-2"
+                                  th:classappend="${venda.cliente.tipoDocumentoLabel == 'PF'} ? 'badge-pf' : 'badge-pj'"
+                                  th:text="${venda.cliente.tipoDocumentoLabel == 'PF'} ? 'Pessoa Física' : 'Pessoa Jurídica'">
+                            </span>
+                            <div class="text-dark fw-bold small mt-1" th:text="${venda.cliente.numeroDocumento}"></div>
                         </div>
                     </div>
-                    
+
                     <div class="mt-4 p-3 bg-light rounded-4 border-start border-success border-4 shadow-sm">
                         <small class="small text-muted text-uppercase fw-bold d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Data e Hora da Compra</small>
                         <span class="text-dark fw-bold" th:text="${#temporals.format(venda.data, 'dd/MM/yyyy HH:mm')}"></span>
@@ -53,7 +50,6 @@
             </div>
         </div>
 
-        <!-- Tabela de Itens Comprados -->
         <div class="col-lg-8">
             <div class="card card-premium overflow-hidden h-100">
                 <div class="card-header bg-white border-0 pt-4 px-4 pb-2">
@@ -66,29 +62,28 @@
                     <div class="table-responsive">
                         <table class="table table-custom align-middle">
                             <thead>
-                                <tr>
-                                    <th class="ps-4">Produto</th>
-                                    <th class="text-center" style="width: 100px;">Qtd</th>
-                                    <th>Unitário</th>
-                                    <th class="pe-4 text-end" style="width: 150px;">Subtotal</th>
-                                </tr>
+                            <tr>
+                                <th class="ps-4">Produto</th>
+                                <th class="text-center" style="width: 100px;">Qtd</th>
+                                <th>Unitário</th>
+                                <th class="pe-4 text-end" style="width: 150px;">Subtotal</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="item : ${venda.itens}">
-                                    <td class="ps-4">
-                                        <span class="fw-bold text-dark d-block" th:text="${item.produto.descricao}"></span>
-                                        <small class="text-muted" th:text="'ID: #' + ${item.produto.id}"></small>
-                                    </td>
-                                    <td class="text-center fw-bold text-dark" th:text="${item.quantidade}"></td>
-                                    <td th:text="'R$ ' + ${#numbers.formatDecimal(item.produto.valor, 1, 'POINT', 2, 'COMMA')}"></td>
-                                    <td class="pe-4 fw-bold text-success text-end fs-5" th:text="'R$ ' + ${#numbers.formatDecimal(item.total(), 1, 'POINT', 2, 'COMMA')}"></td>
-                                </tr>
+                            <tr th:each="item : ${venda.itens}">
+                                <td class="ps-4">
+                                    <span class="fw-bold text-dark d-block" th:text="${item.produto.descricao}"></span>
+                                    <small class="text-muted" th:text="'ID: #' + ${item.produto.id}"></small>
+                                </td>
+                                <td class="text-center fw-bold text-dark" th:text="${item.quantidade}"></td>
+                                <td th:text="'R$ ' + ${#numbers.formatDecimal(item.produto.valor, 1, 'POINT', 2, 'COMMA')}"></td>
+                                <td class="pe-4 fw-bold text-success text-end fs-5" th:text="'R$ ' + ${#numbers.formatDecimal(item.total(), 1, 'POINT', 2, 'COMMA')}"></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                
-                <!-- Rodapé com Totalizadores -->
+
                 <div class="card-footer bg-white border-top border-light p-4">
                     <div class="d-flex justify-content-end align-items-center">
                         <div class="text-end py-2 px-3 rounded-4 bg-light shadow-sm">

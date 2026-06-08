@@ -20,22 +20,23 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                        // Libera login, cadastro, arquivos CSS e assets públicos
-                        .requestMatchers("/login", "/cadastro/**", "/css/**", "/js/**").permitAll()
+                        // 1. ROTAS PÚBLICAS (Navegação livre sem login)
+                        .requestMatchers("/", "/login", "/cadastro", "/cadastro/**", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/produtos/lista").permitAll()
 
-                        // Restrições de rotas de Clientes (Regras do seu repositório)
-                        .requestMatchers("/clientes/lista").hasAnyRole("ADMIN")
-                        .requestMatchers("/clientes/form-pf", "/clientes/save-pf").hasAnyRole("ADMIN")
-                        .requestMatchers("/clientes/form-pj", "/clientes/save-pj").hasAnyRole("ADMIN")
-
-                        // Restrições de rotas de Produtos
+                        // 2. ROTAS DE ADMIN (Bloqueio total por Role)
+                        .requestMatchers("/clientes/**").hasAnyRole("ADMIN")
                         .requestMatchers("/produtos/form", "/produtos/save").hasAnyRole("ADMIN")
+
+                        // 3. ROTAS DE CLIENTE LOGADO (Exige login para comprar ou ver histórico)
+                        .requestMatchers("/vendas/**", "/carrinho/**").authenticated()
 
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/vendas/lista", true)
+                        // O parâmetro 'false' faz o Spring lembrar de onde o usuário veio antes de pedir o login!
+                        .defaultSuccessUrl("/produtos/lista", false)
                         .permitAll()
                 )
                 .httpBasic(withDefaults())

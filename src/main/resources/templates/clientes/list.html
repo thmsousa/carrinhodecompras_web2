@@ -70,14 +70,12 @@
                                   th:classappend="${c.email == null or c.email.empty} ? 'text-muted small italic'"></span>
                     </td>
                     <td>
-                        <div th:if="${c instanceof T(com.example.atv3_associacoes.model.entity.PessoaFisica)}">
-                            <span class="badge badge-custom badge-pf mb-1">Pessoa Física</span>
-                            <small class="d-block text-muted" th:text="'CPF: ' + ${c.cpf}"></small>
-                        </div>
-
-                        <div th:if="${c instanceof T(com.example.atv3_associacoes.model.entity.PessoaJuridica)}">
-                            <span class="badge badge-custom badge-pj mb-1">Pessoa Jurídica</span>
-                            <small class="d-block text-muted" th:text="'CNPJ: ' + ${c.cnpj}"></small>
+                        <div>
+                            <span class="badge badge-custom mb-1"
+                                  th:classappend="${c.tipoDocumentoLabel == 'PF'} ? 'badge-pf' : 'badge-pj'"
+                                  th:text="${c.tipoDocumentoLabel == 'PF'} ? 'Pessoa Física' : 'Pessoa Jurídica'">
+                            </span>
+                            <small class="d-block text-muted" th:text="${c.numeroDocumento}"></small>
                         </div>
                     </td>
                     <td class="text-center">

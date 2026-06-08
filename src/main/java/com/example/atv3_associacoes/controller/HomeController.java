@@ -8,6 +8,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-        return "redirect:/vendas/lista";
+        // Redireciona a raiz do site automaticamente para o catálogo público de produtos
+        return "redirect:/produtos/lista";
     }
 }

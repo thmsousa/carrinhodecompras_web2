@@ -1,15 +1,26 @@
-INSERT INTO role (id, nome) VALUES (1, 'ROLE_ADMIN');
-INSERT INTO role (id, nome) VALUES (2, 'ROLE_USER');
+-- 1. CONTROLE DE ACESSO (ROLES E USUÁRIOS)
 
-INSERT INTO usuario (id, usuario, senha) VALUES (1, 'admin', '$2a$10$tbs4UMB6IouZDQjyy/lE/OArOO1iafF.oXLuAEMS5LIgi2Lxr17yu');
-INSERT INTO usuario (id, usuario, senha) VALUES (2, 'thiago', '$2a$10$57O3OKPPf/cjGhhSmfrgUuj8ofq4UOT.KDYMNYIdF4QW5IwYZgpi6');
+INSERT INTO role (nome) VALUES ('ROLE_ADMIN');
+INSERT INTO role (nome) VALUES ('ROLE_USER');
 
-INSERT INTO usuario_roles (usuario_id, role_id) VALUES (1, 1);
-INSERT INTO usuario_roles (usuario_id, role_id) VALUES (2, 2);
+-- admin / senha: admin (ID automático 1)
+INSERT INTO usuario (usuario, senha) VALUES ('admin', '$2a$10$tbs4UMB6IouZDQjyy/lE/OArOO1iafF.oXLuAEMS5LIgi2Lxr17yu');
+-- thiago / senha: 123 (ID automático 2)
+INSERT INTO usuario (usuario, senha) VALUES ('thiago', '$2a$10$57O3OKPPf/cjGhhSmfrgUuj8ofq4UOT.KDYMNYIdF4QW5IwYZgpi6');
 
-INSERT INTO produto (id, descricao, valor, imagem) VALUES (1, 'Notebook Dell', 4500.00, 'notebook_dell.jpg');
-INSERT INTO produto (id, descricao, valor, imagem) VALUES (2, 'Mouse Logitech', 150.00, 'mouse_logitech.jpg');
-INSERT INTO produto (id, descricao, valor, imagem) VALUES (3, 'Monitor LG 24 Pol', 900.00, 'monitorlg_24pol.jpg');
+-- Tabela associativa muitos-para-muitos (Cruza os IDs gerados de forma sequencial na inicialização)
+INSERT INTO usuario_roles (usuario_id, role_id) VALUES (1, 1); -- admin -> ROLE_ADMIN
+INSERT INTO usuario_roles (usuario_id, role_id) VALUES (2, 2); -- thiago -> ROLE_USER
 
-INSERT INTO pessoa (id, tipo_pessoa, nome, cpf, email, telefone, usuario_id) VALUES (1, 'PF', 'João Silva', '123.456.789-00', 'joao@email.com', '9999-9999', null);
-INSERT INTO pessoa (id, tipo_pessoa, nome, cpf, email, telefone, usuario_id) VALUES (2, 'PF', 'Thiago Medeiros', '321.456.345-12', 'thiago@email.com', '1234-5678', 2);
+-- 2. CADASTRO DE PRODUTOS
+INSERT INTO produto (descricao, valor, imagem) VALUES ('Notebook Dell', 4500.00, 'notebook_dell.jpg');
+INSERT INTO produto (descricao, valor, imagem) VALUES ('Mouse Logitech', 150.00, 'mouse_logitech.jpg');
+INSERT INTO produto (descricao, valor, imagem) VALUES ('Monitor LG 24 Pol', 900.00, 'monitorlg_24pol.jpg');
+
+-- 3. CADASTRO DE CLIENTES (PESSOAS)
+INSERT INTO pessoa (tipo_pessoa, nome, cpf, email, telefone, usuario_id)
+VALUES ('PF', 'João Silva', '123.456.789-00', 'joao@email.com', '9999-9999', null);
+
+-- Thiago Medeiros (ID gerado automaticamente como 2, vinculado ao usuario_id 2 do banco)
+INSERT INTO pessoa (tipo_pessoa, nome, cpf, email, telefone, usuario_id)
+VALUES ('PF', 'Thiago Medeiros', '321.456.345-12', 'thiago@email.com', '1234-5678', 2);
