@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Meu Carrinho')}"></head>
 <body class="bg-light">
 <header th:replace="~{fragments/layout :: header}"></header>
@@ -58,7 +58,7 @@
                             <td class="ps-4">
                                 <span class="fw-bold text-dark d-block" th:text="${item.produto.descricao}"></span>
                                 <small class="text-muted" th:text="'Unitário: R$ ' + ${#numbers.formatDecimal(item.produto.valor, 1, 'POINT', 2, 'COMMA')}"></small>
-                                e</td>
+                            </td>
                             <td class="text-center">
                                 <form th:action="@{/vendas/atualizar-quantidade}" method="post">
                                     <input type="hidden" name="index" th:value="${stat.index}">
@@ -89,31 +89,34 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card checkout-card">
-                <div class="card-body p-4 p-md-5">
-                    <h4 class="fw-bold mb-4 text-white">Resumo da Compra</h4>
+            <div class="card checkout-card bg-success text-white border-0 p-4 rounded-4">
+                <div class="card-body">
+                    <h4 class="fw-bold mb-4">Resumo da Compra</h4>
 
                     <div class="mb-4 text-center py-4 bg-white bg-opacity-10 rounded-4">
-                        <small class="d-block text-uppercase fw-bold mb-1" style="font-size: 0.7rem; letter-spacing: 1px; color: rgba(255,255,255,0.75);">Valor Total da Compra</small>
+                        <small class="d-block text-uppercase fw-bold mb-1" style="font-size: 0.7rem; color: rgba(255,255,255,0.75);">Valor Total</small>
                         <h1 class="display-6 fw-bold mb-0 text-white" th:text="'R$ ' + ${#numbers.formatDecimal(venda != null ? venda.total() : 0, 1, 'POINT', 2, 'COMMA')}"></h1>
                     </div>
 
                     <form th:action="@{/vendas/finalizar}" method="post">
-                        <div class="mb-4 text-dark" th:if="${isAdmin}">
-                            <label class="form-label small fw-bold text-white text-uppercase mb-2" style="letter-spacing: 0.5px;">Selecionar Cliente (Admin)</label>
-                            <select name="cliente.id" class="form-select border-0 shadow-sm py-3 px-3 rounded-3 fw-medium" required>
-                                <option value="" disabled selected>Escolha o cliente da venda...</option>
-                                <option th:each="c : ${clientes}" th:value="${c.id}" th:text="${c.nomeExibicao}"></option>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-uppercase mb-2 text-white">Endereço de Entrega</label>
+                            <select name="enderecoId" class="form-select border-0 shadow-sm py-2 px-3 text-dark rounded-3" required>
+                                <option value="" disabled selected>Escolha onde entregar...</option>
+                                <option th:each="end : ${enderecos}" th:value="${end.id}"
+                                        th:text="'[' + ${end.rotulo} + '] ' + ${end.logradouro} + ', nº ' + ${end.numero}"></option>
                             </select>
                         </div>
 
-                        <div class="mb-4 text-dark" th:if="${!isAdmin}">
-                            <label class="form-label small fw-bold text-white text-uppercase mb-2" style="letter-spacing: 0.5px;">Comprador</label>
-                            <div class="p-3 bg-white rounded-3 fw-bold border">
-                                <i class="bi bi-person-check-fill text-success me-2"></i>
-                                <span th:text="${clienteExclusivo != null ? clienteExclusivo.nomeExibicao : 'A carregar...'}"></span>
-                            </div>
-                            <input type="hidden" name="cliente.id" th:value="${clienteExclusivo != null ? clienteExclusivo.id : ''}" />
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-uppercase mb-2 text-white">Forma de Pagamento</label>
+                            <select name="formaPagamento" class="form-select border-0 shadow-sm py-2 px-3 text-dark rounded-3" required>
+                                <option value="" disabled selected>Forma de pagamento...</option>
+                                <option value="Pix">Pix</option>
+                                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                                <option value="Cartão de Débito">Cartão de Débito</option>
+                                <option value="Boleto Bancário">Boleto Bancário</option>
+                            </select>
                         </div>
 
                         <button type="submit" class="btn btn-light btn-lg w-100 fw-bold text-success shadow py-3 rounded-pill border-0 d-flex align-items-center justify-content-center gap-2"

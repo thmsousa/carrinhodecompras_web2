@@ -1,11 +1,13 @@
 package com.example.atv3_associacoes.controller;
 
+import com.example.atv3_associacoes.model.entity.Endereco;
 import com.example.atv3_associacoes.model.entity.Pessoa;
 import com.example.atv3_associacoes.model.entity.Usuario;
 import com.example.atv3_associacoes.model.entity.Venda;
 import com.example.atv3_associacoes.model.repository.PessoaRepository;
 import com.example.atv3_associacoes.model.repository.VendaRepository;
 import com.example.atv3_associacoes.model.repository.UsuarioRepository;
+import com.example.atv3_associacoes.model.repository.EnderecoRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -35,6 +37,9 @@ public class VendaController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private EnderecoRepository enderecoRepository;
+
     /**
      * Lista todas as vendas ou filtra por uma data específica.
      * Protegido: ADMIN visualiza tudo; CLIENTE visualiza apenas suas próprias compras
@@ -46,11 +51,9 @@ public class VendaController {
                          Principal principal) {
         List<Venda> vendas;
 
-        // 1. role do usuário logado
         boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
-        // 2. roda a busca baseada nos filtros de data padrões do sistema
         if (dataFiltro != null && !dataFiltro.isEmpty()) {
             try {
                 LocalDate dataSel = LocalDate.parse(dataFiltro);
@@ -64,7 +67,6 @@ public class VendaController {
             vendas = repository.findAll();
         }
 
-        // 3. SE NÃO FOR ADMIN: Intercepta e filtra a lista na memória para exibir apenas o histórico do cliente logado
         if (!isAdmin && principal != null) {
             Usuario usuarioLogado = usuarioRepository.findByUsuario(principal.getName());
             if (usuarioLogado != null) {
@@ -79,7 +81,7 @@ public class VendaController {
                             .filter(v -> v.getCliente() != null && v.getCliente().getId().equals(clienteId))
                             .collect(Collectors.toList());
                 } else {
-                    vendas = List.of(); // Se a conta não tiver pessoa vinculada, esvazia por segurança
+                    vendas = List.of();
                 }
             } else {
                 vendas = List.of();
@@ -91,32 +93,33 @@ public class VendaController {
     }
 
     /**
-     * Exibe a página do carrinho de compras.
+     * Exibe a página do carrinho de compras e injeta os endereços rotulados da Pessoa logada.
      */
     @GetMapping("/carrinho")
     public String verCarrinho(Model model, HttpSession session, Authentication authentication, Principal principal) {
         Venda venda = (Venda) session.getAttribute("venda_sessao");
         model.addAttribute("venda", venda);
 
-        // Verifica se o usuário logado é ADMIN
         boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
         model.addAttribute("isAdmin", isAdmin);
 
-        if (isAdmin) {
-            model.addAttribute("clientes", pessoaRepository.findAll());
-        } else if (principal != null) {
-            // Busca o cliente logado para exibir no resumo do carrinho
+        if (principal != null) {
             Usuario usuarioLogado = usuarioRepository.findByUsuario(principal.getName());
             if (usuarioLogado != null) {
                 try {
-                    // Executa a busca da pessoa vinculada diretamente por HQL via EntityManager
                     List<Pessoa> resultado = pessoaRepository.findAll();
                     Pessoa clienteExclusivo = resultado.stream()
                             .filter(p -> p.getUsuario() != null && p.getUsuario().getId().equals(usuarioLogado.getId()))
                             .findFirst().orElse(null);
+
                     model.addAttribute("clienteExclusivo", clienteExclusivo);
+
+                    if (clienteExclusivo != null) {
+                        // Envia a lista contendo os múltiplos endereços da pessoa autenticada
+                        model.addAttribute("enderecos", clienteExclusivo.getEnderecos());
+                    }
                 } catch (Exception e) {
                     model.addAttribute("clienteExclusivo", null);
                 }
@@ -138,37 +141,26 @@ public class VendaController {
     }
 
     /**
-     * Finaliza a venda persistindo no banco de dados com validações robustas.
+     * Finaliza a venda forçando o vínculo com a sessão e validando o endereço e pagamento.
      */
     @PostMapping("/finalizar")
     @Transactional
-    public String finalizar(@RequestParam(value = "cliente.id", required = false) Long clienteId,
+    public String finalizar(@RequestParam("enderecoId") Long enderecoId,
+                            @RequestParam("formaPagamento") String formaPagamento,
                             HttpSession session,
-                            Authentication authentication,
                             Principal principal,
                             RedirectAttributes redirectAttributes) {
 
         Venda vendaSessao = (Venda) session.getAttribute("venda_sessao");
 
-        // VALIDAÇÃO 1: Carrinho vazio ou nulo
         if (vendaSessao == null || vendaSessao.getItens().isEmpty()) {
             redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível finalizar uma venda sem itens no carrinho!");
             return "redirect:/vendas/carrinho";
         }
 
         Pessoa cliente = null;
-        boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
-        if (isAdmin) {
-            // VALIDAÇÃO 2: Cliente não selecionado para o admin
-            if (clienteId == null) {
-                redirectAttributes.addFlashAttribute("mensagemErro", "Você deve selecionar um cliente para finalizar a compra.");
-                return "redirect:/vendas/carrinho";
-            }
-            cliente = pessoaRepository.findById(clienteId);
-        } else if (principal != null) {
-            // CLIENTE COMUM: Ignora o ID da requisição e força o vínculo com a sua sessão segura
+        if (principal != null) {
             Usuario usuarioLogado = usuarioRepository.findByUsuario(principal.getName());
             if (usuarioLogado != null) {
                 List<Pessoa> resultado = pessoaRepository.findAll();
@@ -183,26 +175,36 @@ public class VendaController {
                 redirectAttributes.addFlashAttribute("mensagemErro", "O cliente associado não foi encontrado ou é inválido.");
                 return "redirect:/vendas/carrinho";
             }
-            // Configura os dados finais da venda
+
+            // Valida se o endereço informado pertence ao cliente do escopo logado
+            final Long targetId = enderecoId;
+            Endereco endereco = cliente.getEnderecos().stream()
+                    .filter(e -> e.getId().equals(targetId))
+                    .findFirst()
+                    .orElse(null);
+
+            if (endereco == null) {
+                redirectAttributes.addFlashAttribute("mensagemErro", "O endereço de entrega selecionado é inválido.");
+                return "redirect:/vendas/carrinho";
+            }
+
+            // Atribui os novos atributos obrigatórios na Venda
             vendaSessao.setCliente(cliente);
+            vendaSessao.setEnderecoEntrega(endereco);
+            vendaSessao.setFormaPagamento(formaPagamento);
             vendaSessao.setData(LocalDateTime.now());
 
-            // Sincroniza o vínculo de cada item com a venda antes de salvar
             if (vendaSessao.getItens() != null) {
                 vendaSessao.getItens().forEach(item -> item.setVenda(vendaSessao));
             }
 
-            // Persiste a venda e seus itens no banco
             repository.save(vendaSessao);
-            // Limpa o carrinho da sessão após o sucesso
             session.removeAttribute("venda_sessao");
-            // Feedback de sucesso para a página de listagem
             redirectAttributes.addFlashAttribute("mensagemSucesso", "Venda finalizada com sucesso!");
 
             return "redirect:/vendas/lista";
 
         } catch (Exception e) {
-            // Captura falhas de persistência ou integridade
             redirectAttributes.addFlashAttribute("mensagemErro", "Erro ao processar a venda no servidor: " + e.getMessage());
             return "redirect:/vendas/carrinho";
         }
@@ -210,7 +212,6 @@ public class VendaController {
 
     /**
      * Exibe os detalhes de uma venda específica que ja foi feita.
-     * Protegido: Bloqueia caso um cliente comum tente digitar na URL o ID de um pedido alheio.
      */
     @GetMapping("/detalhes/{id}")
     public String detalhes(@PathVariable Long id,
@@ -226,7 +227,6 @@ public class VendaController {
         boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
-        // LÓGICA DE PROTEÇÃO DE ENDPOINT:
         if (!isAdmin && principal != null) {
             Usuario usuarioLogado = usuarioRepository.findByUsuario(principal.getName());
             List<Pessoa> todasPessoas = pessoaRepository.findAll();
@@ -234,7 +234,6 @@ public class VendaController {
                     .filter(p -> p.getUsuario() != null && p.getUsuario().getId().equals(usuarioLogado.getId()))
                     .findFirst().orElse(null);
 
-            // Se o pedido não pertence ao cliente autenticado, corta o fluxo imediatamente
             if (venda.getCliente() == null || clienteLogado == null || !venda.getCliente().getId().equals(clienteLogado.getId())) {
                 redirectAttributes.addFlashAttribute("mensagemErro", "Acesso negado! Você não tem permissão para visualizar este pedido.");
                 return "redirect:/vendas/lista";
@@ -259,7 +258,6 @@ public class VendaController {
             if (novaQuantidade != null && novaQuantidade > 0) {
                 venda.getItens().get(index).setQuantidade(novaQuantidade);
             } else {
-                // Se o usuário colocar 0 ou negativo o item é removido
                 venda.getItens().remove(index);
                 redirectAttributes.addFlashAttribute("mensagemSucesso", "Item removido do carrinho.");
             }

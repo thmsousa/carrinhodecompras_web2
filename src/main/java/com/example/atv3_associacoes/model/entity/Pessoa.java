@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,10 +25,12 @@ public abstract class Pessoa implements Serializable {
     @OneToMany(mappedBy = "cliente")
     private List<Venda> vendas;
 
-    // Adicione esse atributo dentro da classe abstrata Pessoa
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Endereco> enderecos = new ArrayList<>();
 
     public Usuario getUsuario() {
         return usuario;
@@ -37,7 +40,14 @@ public abstract class Pessoa implements Serializable {
         this.usuario = usuario;
     }
 
-    // Retorna se é Física ou Jurídica baseando-se na instância real
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+
     public String getTipoDocumentoLabel() {
         if (this instanceof PessoaFisica || this.getClass().getSimpleName().contains("PessoaFisica")) {
             return "PF";
@@ -45,7 +55,6 @@ public abstract class Pessoa implements Serializable {
         return "PJ";
     }
 
-    // Retorna o CPF ou o CNPJ dinamicamente
     public String getNumeroDocumento() {
         if (this instanceof PessoaFisica) {
             return "CPF: " + ((PessoaFisica) this).getCpf();

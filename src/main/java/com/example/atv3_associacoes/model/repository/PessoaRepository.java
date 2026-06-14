@@ -4,7 +4,7 @@ import com.example.atv3_associacoes.model.entity.Pessoa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional; // Adicionado
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
@@ -28,6 +28,17 @@ public class PessoaRepository {
 
     public Pessoa findById(Long id) {
         return em.find(Pessoa.class, id);
+    }
+
+    public Pessoa findByUsername(String username) {
+        try {
+            String hql = "SELECT p FROM Pessoa p WHERE p.usuario.username = :u";
+            return em.createQuery(hql, Pessoa.class)
+                    .setParameter("u", username)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public List<Pessoa> findByNome(String termo) {

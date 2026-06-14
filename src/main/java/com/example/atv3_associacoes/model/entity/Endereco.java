@@ -12,8 +12,8 @@ public class Endereco implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O rótulo do endereço é obrigatório (Ex: Trabalho, Residencial).")
-    private String rotulo; // "Casa do pai", "Residencial", "Trabalho"
+    @NotBlank(message = "O rótulo do endereço é obrigatório (Ex: Trabalho, Casa do Pai, Residencial).")
+    private String rotulo;
 
     @NotBlank(message = "O logradouro é obrigatório.")
     private String logradouro;
@@ -36,7 +36,6 @@ public class Endereco implements Serializable {
     @JoinColumn(name = "pessoa_id")
     private Pessoa cliente;
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }
