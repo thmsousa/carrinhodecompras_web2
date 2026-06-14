@@ -3,9 +3,9 @@
 INSERT INTO role (nome) VALUES ('ROLE_ADMIN');
 INSERT INTO role (nome) VALUES ('ROLE_USER');
 
--- admin / senha: admin (ID automático 1)
+-- admin / senha: admin
 INSERT INTO usuario (usuario, senha) VALUES ('admin', '$2a$10$tbs4UMB6IouZDQjyy/lE/OArOO1iafF.oXLuAEMS5LIgi2Lxr17yu');
--- thiago / senha: 123 (ID automático 2)
+-- thiago / senha: 123
 INSERT INTO usuario (usuario, senha) VALUES ('thiago', '$2a$10$57O3OKPPf/cjGhhSmfrgUuj8ofq4UOT.KDYMNYIdF4QW5IwYZgpi6');
 
 -- Tabela associativa muitos-para-muitos (Cruza os IDs gerados de forma sequencial na inicialização)

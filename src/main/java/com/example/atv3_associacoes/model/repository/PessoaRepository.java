@@ -13,7 +13,7 @@ public class PessoaRepository {
     @PersistenceContext
     private EntityManager em;
 
-    @Transactional // Necessário para operações de escrita
+    @Transactional
     public void save(Pessoa pessoa) {
         if (pessoa.getId() == null) {
             em.persist(pessoa);

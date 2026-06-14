@@ -77,7 +77,7 @@ public class CadastroController {
         return "redirect:/login";
     }
 
-    // Método auxiliar para criar e configurar o usuário
+    // metodo para criar e configurar o usuário
     private Usuario criarUsuario(String login, String senha) {
         Usuario usuario = new Usuario();
         usuario.setUsuario(login);

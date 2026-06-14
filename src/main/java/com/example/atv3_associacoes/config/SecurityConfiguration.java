@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        // O parâmetro 'false' faz o Spring lembrar de onde o usuário veio antes de pedir o login!
+                        // O parâmetro false faz o Spring lembrar de onde o usuário veio antes de pedir o login
                         .defaultSuccessUrl("/produtos/lista", false)
                         .permitAll()
                 )
