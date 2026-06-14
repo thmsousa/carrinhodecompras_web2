@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head th:fragment="head(title)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,66 +9,71 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
 
-<nav th:fragment="header" class="navbar navbar-expand-lg navbar-custom sticky-top py-3 mb-5">
-    <div class="container">
-        <a class="navbar-brand fw-bold text-success" th:href="@{/}">
-            Sistema de vendas
-        </a>
-        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center gap-1">
-                <li class="nav-item">
-                    <a class="nav-link px-3" th:href="@{/produtos/lista}">
-                        Produtos
-                    </a>
-                </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link px-3" th:href="@{/vendas/lista}">
-                        Vendas
-                    </a>
-                </li>
-                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link px-3" th:href="@{/clientes/lista}">
-                        Clientes
-                    </a>
-                </li>
+    <nav th:fragment="header" class="navbar navbar-expand-lg navbar-custom sticky-top py-3 mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-success" th:href="@{/}">
+                Sistema de vendas
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" th:href="@{/produtos/lista}">
+                            Produtos
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link px-3" th:href="@{/vendas/lista}">
+                            Vendas
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link px-3" th:href="@{/clientes/lista}">
+                            Clientes
+                        </a>
+                    </li>
 
-                <li class="nav-item ms-lg-2" sec:authorize="!isAuthenticated()">
-                    <a th:href="@{/login}" class="btn btn-outline-success btn-sm rounded-pill px-3">
-                        Entrar
-                    </a>
-                </li>
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a th:href="@{/cadastro/pf}" class="btn btn-success btn-sm rounded-pill px-3 text-white">
-                        Cadastre-se
-                    </a>
-                </li>
+                    <li class="nav-item ms-lg-2" sec:authorize="!isAuthenticated()">
+                        <a th:href="@{/login}" class="btn btn-outline-success btn-sm rounded-pill px-3">
+                            Entrar
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a th:href="@{/cadastro/pf}" class="btn btn-success btn-sm rounded-pill px-3 text-white">
+                            Cadastre-se
+                        </a>
+                    </li>
 
-                <li class="nav-item ms-lg-2" sec:authorize="isAuthenticated()">
-                    <span class="nav-link px-3 text-muted bg-light rounded-pill border py-1 px-3 d-inline-flex align-items-center">
-                        <i class="bi bi-person-circle me-1 text-primary"></i>
-                        <span> <strong class="text-dark" sec:authentication="name"></strong></span>
-                    </span>
-                </li>
-                <li class="nav-item ms-lg-2" sec:authorize="isAuthenticated()">
-                    <form th:action="@{/logout}" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-link nav-link px-3 fw-bold text-danger d-inline-flex align-items-center gap-1 border-0 bg-transparent">
-                            <i class="bi bi-box-arrow-right"></i> Sair
-                        </button>
-                    </form>
-                </li>
-            </ul>
+                    <li class="nav-item ms-lg-2" sec:authorize="isAuthenticated()">
+                        <span
+                            class="nav-link px-3 text-muted bg-light rounded-pill border py-1 px-3 d-inline-flex align-items-center">
+                            <i class="bi bi-person-circle me-1 text-primary"></i>
+                            <span> <strong class="text-dark" sec:authentication="name"></strong></span>
+                        </span>
+                    </li>
+                    <li class="nav-item ms-lg-2" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post" class="d-inline">
+                            <button type="submit"
+                                class="btn btn-link nav-link px-3 fw-bold text-danger d-inline-flex align-items-center gap-1 border-0 bg-transparent">
+                                <i class="bi bi-box-arrow-right"></i> Sair
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
+
+
+    <div th:fragment="scripts">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </div>
-</nav>
-
-
-<div th:fragment="scripts">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</div>
 </body>
+
 </html>

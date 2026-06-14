@@ -35,6 +35,13 @@ public class CadastroController {
 
     @GetMapping("/pf")
     public String formPf(PessoaFisica pessoaFisica) {
+        // Inicializa a lista com uma instância vazia para evitar erro de índice na tela do Thymeleaf
+        if (pessoaFisica.getEnderecos() == null) {
+            pessoaFisica.setEnderecos(new ArrayList<>());
+        }
+        if (pessoaFisica.getEnderecos().isEmpty()) {
+            pessoaFisica.getEnderecos().add(new Endereco());
+        }
         return "cadastro/form-pf";
     }
 
@@ -48,6 +55,12 @@ public class CadastroController {
 
         Usuario usuario = criarUsuario(login, senha);
         pessoa.setUsuario(usuario);
+
+        // Vincula o endereço recebido de volta à pessoa (preenche o pessoa_id no banco)
+        if (pessoa.getEnderecos() != null && !pessoa.getEnderecos().isEmpty()) {
+            pessoa.getEnderecos().get(0).setCliente(pessoa);
+        }
+
         pessoaRepository.save(pessoa);
 
         attr.addFlashAttribute("mensagemSucesso", "Cadastro realizado com sucesso! Faça login.");
@@ -58,6 +71,13 @@ public class CadastroController {
 
     @GetMapping("/pj")
     public String formPj(PessoaJuridica pessoaJuridica) {
+        // Inicializa a lista com uma instância vazia para evitar erro de índice na tela do Thymeleaf
+        if (pessoaJuridica.getEnderecos() == null) {
+            pessoaJuridica.setEnderecos(new ArrayList<>());
+        }
+        if (pessoaJuridica.getEnderecos().isEmpty()) {
+            pessoaJuridica.getEnderecos().add(new Endereco());
+        }
         return "cadastro/form-pj";
     }
 
@@ -71,6 +91,12 @@ public class CadastroController {
 
         Usuario usuario = criarUsuario(login, senha);
         pessoa.setUsuario(usuario);
+
+        // Vincula o endereço recebido de volta à pessoa (preenche o pessoa_id no banco)
+        if (pessoa.getEnderecos() != null && !pessoa.getEnderecos().isEmpty()) {
+            pessoa.getEnderecos().get(0).setCliente(pessoa);
+        }
+
         pessoaRepository.save(pessoa);
 
         attr.addFlashAttribute("mensagemSucesso", "Cadastro realizado com sucesso! Faça login.");

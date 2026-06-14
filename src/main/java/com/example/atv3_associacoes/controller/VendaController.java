@@ -9,11 +9,13 @@ import com.example.atv3_associacoes.model.repository.VendaRepository;
 import com.example.atv3_associacoes.model.repository.UsuarioRepository;
 import com.example.atv3_associacoes.model.repository.EnderecoRepository;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -117,7 +119,6 @@ public class VendaController {
                     model.addAttribute("clienteExclusivo", clienteExclusivo);
 
                     if (clienteExclusivo != null) {
-                        // Envia a lista contendo os múltiplos endereços da pessoa autenticada
                         model.addAttribute("enderecos", clienteExclusivo.getEnderecos());
                     }
                 } catch (Exception e) {
@@ -128,6 +129,48 @@ public class VendaController {
         return "vendas/cart";
     }
 
+    /**
+     * Exibe a tela de cadastro de novo endereço integrado ao fluxo da venda
+     */
+    @GetMapping("/novo-endereco")
+    public String exibirFormEndereco(Endereco endereco) {
+        return "vendas/form-endereco";
+    }
+
+    /**
+     * Recebe os dados do formulário tradicional e redireciona de volta para o carrinho
+     */
+    @PostMapping("/salvar-endereco")
+    @Transactional
+    public String salvarEnderecoTradicional(@Valid Endereco endereco, BindingResult result, Principal principal, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "vendas/form-endereco";
+        }
+
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        Usuario usuarioLogado = usuarioRepository.findByUsuario(principal.getName());
+        List<Pessoa> resultado = pessoaRepository.findAll();
+
+        Pessoa cliente = resultado.stream()
+                .filter(p -> p.getUsuario() != null && p.getUsuario().getId().equals(usuarioLogado.getId()))
+                .findFirst().orElse(null);
+
+        // TRATAMENTO: Se for o admin e ele não tiver um vínculo de Pessoa criado no import.sql ainda
+        if (cliente == null) {
+            redirectAttributes.addFlashAttribute("mensagemErro",
+                    "Não foi possível cadastrar o endereço. Seu usuário atual (" + principal.getName() + ") não possui um perfil de Cliente associado no banco de dados.");
+            return "redirect:/vendas/carrinho";
+        }
+
+        endereco.setCliente(cliente);
+        enderecoRepository.save(endereco);
+
+        redirectAttributes.addFlashAttribute("mensagemSucesso", "Novo endereço cadastrado com sucesso!");
+        return "redirect:/vendas/carrinho";
+    }
     /**
      * Remove um item específico do carrinho baseado no índice da lista.
      */
@@ -176,7 +219,6 @@ public class VendaController {
                 return "redirect:/vendas/carrinho";
             }
 
-            // Valida se o endereço informado pertence ao cliente do escopo logado
             final Long targetId = enderecoId;
             Endereco endereco = cliente.getEnderecos().stream()
                     .filter(e -> e.getId().equals(targetId))
@@ -188,7 +230,6 @@ public class VendaController {
                 return "redirect:/vendas/carrinho";
             }
 
-            // Atribui os novos atributos obrigatórios na Venda
             vendaSessao.setCliente(cliente);
             vendaSessao.setEnderecoEntrega(endereco);
             vendaSessao.setFormaPagamento(formaPagamento);

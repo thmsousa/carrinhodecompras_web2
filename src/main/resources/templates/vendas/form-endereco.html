@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Cadastrar Endereço de Entrega')}"></head>
+<body class="bg-light">
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main class="container pb-5">
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h3 class="fw-bold m-0 text-dark">Novo Endereço de Entrega</h3>
+                    <p class="text-muted small m-0">Adicione um novo local para entrega sem perder seu carrinho</p>
+                </div>
+                <a th:href="@{/vendas/carrinho}" class="btn btn-secondary-custom py-2 px-3">
+                    Voltar ao Carrinho
+                </a>
+            </div>
+
+            <div class="card card-premium shadow-sm">
+                <div class="card-body p-4">
+                    <form th:action="@{/vendas/salvar-endereco}" th:object="${endereco}" method="post">
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted text-uppercase mb-2">Rótulo / Tipo (Identificação)</label>
+                            <input type="text" th:field="*{rotulo}" class="form-control form-control-custom"
+                                   placeholder="Ex: Trabalho, Casa do Pai, Casa da Praia" th:classappend="${#fields.hasErrors('rotulo')} ? 'is-invalid'" required>
+                            <div class="invalid-feedback" th:errors="*{rotulo}"></div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-9">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Rua / Logradouro</label>
+                                <input type="text" th:field="*{logradouro}" class="form-control form-control-custom" th:classappend="${#fields.hasErrors('logradouro')} ? 'is-invalid'" required>
+                                <div class="invalid-feedback" th:errors="*{logradouro}"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Número</label>
+                                <input type="text" th:field="*{numero}" class="form-control form-control-custom" th:classappend="${#fields.hasErrors('numero')} ? 'is-invalid'" required>
+                                <div class="invalid-feedback" th:errors="*{numero}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Bairro</label>
+                                <input type="text" th:field="*{bairro}" class="form-control form-control-custom" th:classappend="${#fields.hasErrors('bairro')} ? 'is-invalid'" required>
+                                <div class="invalid-feedback" th:errors="*{bairro}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Complemento</label>
+                                <input type="text" th:field="*{complemento}" class="form-control form-control-custom" placeholder="Ex: Bloco C, Apto 20">
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-7">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Cidade</label>
+                                <input type="text" th:field="*{cidade}" class="form-control form-control-custom" th:classappend="${#fields.hasErrors('cidade')} ? 'is-invalid'" required>
+                                <div class="invalid-feedback" th:errors="*{cidade}"></div>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">CEP</label>
+                                <input type="text" th:field="*{cep}" class="form-control form-control-custom" placeholder="00000-000" th:classappend="${#fields.hasErrors('cep')} ? 'is-invalid'" required>
+                                <div class="invalid-feedback" th:errors="*{cep}"></div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-3 fw-bold">
+                            <i class="bi bi-save2-fill me-1"></i> Gravar Endereço
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

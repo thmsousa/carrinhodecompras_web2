@@ -7,10 +7,10 @@
 <main class="container pb-5">
     <div class="row">
         <div class="col-lg-8 mx-auto">
-            
+
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <div>
-                    <h3 class="fw-bold m-0 text-dark">Nova Pessoa Jurídica</h3>
+                    <h3 class="fw-bold m-0 text-dark">Nova Pessoa Jurídica (Admin)</h3>
                     <p class="text-muted small m-0">Preencha os dados cadastrais do cliente PJ</p>
                 </div>
                 <a th:href="@{/clientes/lista}" class="btn btn-secondary-custom py-2 px-3 d-inline-flex align-items-center gap-1">
@@ -21,15 +21,15 @@
             <div class="card card-premium">
                 <div class="card-body p-4 p-md-5">
                     <form th:action="@{/clientes/save-pj}" th:object="${pessoaJuridica}" method="post">
-                        
+
                         <div class="mb-4">
                             <label class="form-label small fw-bold text-muted text-uppercase mb-2">Razão Social</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0 border-0 ps-3">
                                     <i class="bi bi-building text-muted"></i>
                                 </span>
-                                <input type="text" th:field="*{razaoSocial}" 
-                                       class="form-control form-control-custom border-start-0 ps-2" 
+                                <input type="text" th:field="*{razaoSocial}"
+                                       class="form-control form-control-custom border-start-0 ps-2"
                                        placeholder="Ex: ACME Corporation Ltda"
                                        th:classappend="${#fields.hasErrors('razaoSocial')} ? 'is-invalid'"
                                        style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
@@ -44,8 +44,8 @@
                                     <span class="input-group-text bg-light border-end-0 border-0 ps-3">
                                         <i class="bi bi-card-heading text-muted"></i>
                                     </span>
-                                    <input type="text" th:field="*{cnpj}" 
-                                           class="form-control form-control-custom border-start-0 ps-2" 
+                                    <input type="text" th:field="*{cnpj}"
+                                           class="form-control form-control-custom border-start-0 ps-2"
                                            placeholder="00.000.000/0000-00"
                                            th:classappend="${#fields.hasErrors('cnpj')} ? 'is-invalid'"
                                            style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
@@ -59,8 +59,8 @@
                                     <span class="input-group-text bg-light border-end-0 border-0 ps-3">
                                         <i class="bi bi-telephone text-muted"></i>
                                     </span>
-                                    <input type="text" th:field="*{telefone}" 
-                                           class="form-control form-control-custom border-start-0 ps-2" 
+                                    <input type="text" th:field="*{telefone}"
+                                           class="form-control form-control-custom border-start-0 ps-2"
                                            placeholder="(00) 0000-0000"
                                            th:classappend="${#fields.hasErrors('telefone')} ? 'is-invalid'"
                                            style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
@@ -75,12 +75,62 @@
                                 <span class="input-group-text bg-light border-end-0 border-0 ps-3">
                                     <i class="bi bi-envelope text-muted"></i>
                                 </span>
-                                <input type="email" th:field="*{email}" 
-                                       class="form-control form-control-custom border-start-0 ps-2" 
+                                <input type="email" th:field="*{email}"
+                                       class="form-control form-control-custom border-start-0 ps-2"
                                        placeholder="contato@acme.com"
                                        th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
                                        style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                                 <div class="invalid-feedback" th:errors="*{email}"></div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+                        <p class="small fw-bold text-success text-uppercase mb-3"><i class="bi bi-geo-alt-fill me-1"></i> Endereço Comercial Sede</p>
+
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-muted text-uppercase mb-2">Rótulo / Identificação do Endereço</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 border-0 ps-3"><i class="bi bi-tag text-muted"></i></span>
+                                <input type="text" th:field="*{enderecos[0].rotulo}" class="form-control form-control-custom border-start-0 ps-2" placeholder="Ex: Matriz, Escritório, Depósito" required style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-9 mb-3 mb-md-0">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Logradouro / Rua</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 border-0 ps-3"><i class="bi bi-signpost text-muted"></i></span>
+                                    <input type="text" th:field="*{enderecos[0].logradouro}" class="form-control form-control-custom border-start-0 ps-2" placeholder="Ex: Distrito Industrial, QD 04" required style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Número</label>
+                                <input type="text" th:field="*{enderecos[0].numero}" class="form-control form-control-custom" placeholder="Ex: S/N" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Bairro</label>
+                                <input type="text" th:field="*{enderecos[0].bairro}" class="form-control form-control-custom" placeholder="Ex: Setor Industrial" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Complemento</label>
+                                <input type="text" th:field="*{enderecos[0].complemento}" class="form-control form-control-custom" placeholder="Ex: Galpão B">
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-7 mb-3 mb-md-0">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">Cidade</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 border-0 ps-3"><i class="bi bi-map text-muted"></i></span>
+                                    <input type="text" th:field="*{enderecos[0].cidade}" class="form-control form-control-custom border-start-0 ps-2" placeholder="Ex: Palmas" required style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label small fw-bold text-muted text-uppercase mb-2">CEP</label>
+                                <input type="text" th:field="*{enderecos[0].cep}" class="form-control form-control-custom" placeholder="77000-000" required>
                             </div>
                         </div>
 
