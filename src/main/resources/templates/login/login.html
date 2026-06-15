@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
-    <title>Login - Sistema de Vendas</title>
+    <title>Sistema de Vendas</title>
     <!-- CSS Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -11,33 +11,37 @@
 </head>
 <body class="login-page">
 
-    <div class="login-card">
+    <div class="login-card animate-fade-in">
+        <!-- Logo e Cabeçalho -->
         <div class="text-center mb-4">
-            <div class="bg-success-subtle text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 60px; height: 60px;">
-                <i class="bi bi-cart4 fs-2"></i>
+            <div class="bg-success-subtle text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 65px; height: 65px;">
+                <i class="bi bi-lightning-charge-fill fs-2"></i>
             </div>
-            <h3 class="fw-bold m-0">Sistema de Vendas</h3>
-            <p class="text-muted small mt-1">Insira suas credenciais para continuar</p>
+            <h3 class="fw-bold m-0 text-dark">Sistema de Vendas</h3>
+            <p class="text-muted small mt-1">Insira suas credenciais de acesso</p>
         </div>
 
+        <!-- Alerta de Erro -->
         <div th:if="${param.error}" class="alert alert-danger alert-premium border-0 py-3 mb-4 d-flex align-items-center gap-2">
             <i class="bi bi-exclamation-triangle-fill fs-5 text-danger"></i>
-            <span class="small fw-semibold">Usuário ou senha inválidos!</span>
+            <span class="small fw-semibold text-danger">Usuário ou senha inválidos!</span>
         </div>
 
-        <div th:if="${mensagemSucesso}" class="alert alert-success border-0 py-3 mb-4 d-flex align-items-center gap-2">
+        <!-- Alerta de Sucesso -->
+        <div th:if="${mensagemSucesso}" class="alert alert-success alert-premium border-0 py-3 mb-4 d-flex align-items-center gap-2">
             <i class="bi bi-check-circle-fill fs-5 text-success"></i>
-            <span class="small fw-semibold" th:text="${mensagemSucesso}"></span>
+            <span class="small fw-semibold text-success" th:text="${mensagemSucesso}"></span>
         </div>
 
+        <!-- Formulário de Login -->
         <form th:action="@{/login}" method="post">
             <div class="mb-3">
                 <label class="form-label small fw-bold text-muted text-uppercase mb-2">Usuário</label>
                 <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0 border-0 ps-3">
+                    <span class="input-group-text input-group-text-custom">
                         <i class="bi bi-person text-muted"></i>
                     </span>
-                    <input class="form-control form-control-custom border-start-0 ps-2" 
+                    <input class="form-control form-control-custom ps-2" 
                            type="text" 
                            name="username" 
                            placeholder="Ex: admin" 
@@ -49,10 +53,10 @@
             <div class="mb-4">
                 <label class="form-label small fw-bold text-muted text-uppercase mb-2">Senha</label>
                 <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0 border-0 ps-3">
+                    <span class="input-group-text input-group-text-custom">
                         <i class="bi bi-lock text-muted"></i>
                     </span>
-                    <input class="form-control form-control-custom border-start-0 ps-2" 
+                    <input class="form-control form-control-custom ps-2" 
                            type="password" 
                            name="password" 
                            placeholder="••••••••" 
@@ -70,13 +74,14 @@
 
         <hr class="my-4">
 
+        <!-- Opções de Cadastro -->
         <div class="text-center">
-            <p class="small text-muted mb-2">Não possui conta? Cadastre-se:</p>
+            <p class="small text-muted mb-3">Não possui conta? Cadastre-se:</p>
             <div class="d-flex gap-2 justify-content-center">
-                <a th:href="@{/cadastro/pf}" class="btn btn-outline-success btn-sm px-3 py-2">
+                <a th:href="@{/cadastro/pf}" class="btn btn-outline-success btn-sm px-3 py-2 btn-action w-50" style="border-radius: var(--radius-md);">
                     <i class="bi bi-person-plus me-1"></i> Pessoa Física
                 </a>
-                <a th:href="@{/cadastro/pj}" class="btn btn-outline-primary btn-sm px-3 py-2">
+                <a th:href="@{/cadastro/pj}" class="btn btn-outline-primary btn-sm px-3 py-2 btn-action w-50" style="border-radius: var(--radius-md);">
                     <i class="bi bi-building-add me-1"></i> Pessoa Jurídica
                 </a>
             </div>

@@ -4,7 +4,7 @@
 <head th:fragment="head(title)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}">Sistema de vendas</title>
+    <title th:text="${title}">Sistema de Vendas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -14,47 +14,46 @@
 
     <nav th:fragment="header" class="navbar navbar-expand-lg navbar-custom sticky-top py-3 mb-5">
         <div class="container">
-            <a class="navbar-brand fw-bold text-success" th:href="@{/}">
-                Sistema de vendas
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="bi bi-lightning-charge-fill"></i>
+                <span>Sistema de Vendas</span>
             </a>
             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
                     <li class="nav-item">
                         <a class="nav-link px-3" th:href="@{/produtos/lista}">
-                            Produtos
+                            <i class="bi bi-grid-fill me-1 small"></i> Catálogo
                         </a>
                     </li>
                     <li class="nav-item" sec:authorize="isAuthenticated()">
                         <a class="nav-link px-3" th:href="@{/vendas/lista}">
-                            Vendas
+                            <i class="bi bi-receipt me-1 small"></i> Vendas
                         </a>
                     </li>
                     <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-                        <a class="nav-link px-3" th:href="@{/clientes/lista}">
-                            Clientes
+                        <a class="nav-link px-3 text-accent" th:href="@{/clientes/lista}">
+                            <i class="bi bi-people-fill me-1 small"></i> Clientes
                         </a>
                     </li>
 
-                    <li class="nav-item ms-lg-2" sec:authorize="!isAuthenticated()">
-                        <a th:href="@{/login}" class="btn btn-outline-success btn-sm rounded-pill px-3">
+                    <li class="nav-item ms-lg-3 d-flex gap-2" sec:authorize="!isAuthenticated()">
+                        <a th:href="@{/login}" class="btn btn-secondary-custom btn-sm rounded-pill px-4">
                             Entrar
                         </a>
-                    </li>
-                    <li class="nav-item" sec:authorize="!isAuthenticated()">
-                        <a th:href="@{/cadastro/pf}" class="btn btn-success btn-sm rounded-pill px-3 text-white">
+                        <a th:href="@{/cadastro/pf}" class="btn btn-primary-custom btn-sm rounded-pill px-4">
                             Cadastre-se
                         </a>
                     </li>
 
-                    <li class="nav-item ms-lg-2" sec:authorize="isAuthenticated()">
+                    <li class="nav-item ms-lg-3" sec:authorize="isAuthenticated()">
                         <span
-                            class="nav-link px-3 text-muted bg-light rounded-pill border py-1 px-3 d-inline-flex align-items-center">
-                            <i class="bi bi-person-circle me-1 text-primary"></i>
-                            <span> <strong class="text-dark" sec:authentication="name"></strong></span>
+                            class="nav-link px-3 text-muted bg-white shadow-sm rounded-pill border py-1.5 px-3 d-inline-flex align-items-center gap-1.5">
+                            <i class="bi bi-person-circle text-success fs-5"></i>
+                            <span> Olá, <strong class="text-dark" sec:authentication="name"></strong></span>
                         </span>
                     </li>
                     <li class="nav-item ms-lg-2" sec:authorize="isAuthenticated()">
@@ -70,6 +69,39 @@
         </div>
     </nav>
 
+    <footer th:fragment="footer" class="footer-custom mt-5">
+        <div class="container">
+            <div class="row g-4 justify-content-between text-start">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="text-white fw-bold mb-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-lightning-charge-fill text-success"></i>
+                        <span>Sistema de Vendas</span>
+                    </h5>
+                    <p class="small text-muted mb-4">
+                        Sistema de e-commerce e gestão de vendas.
+                    </p>
+
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6>Navegação</h6>
+                    <ul class="list-unstyled">
+                        <li><a th:href="@{/produtos/lista}">Catálogo</a></li>
+                        <li sec:authorize="isAuthenticated()"><a th:href="@{/vendas/lista}">Vendas</a></li>
+                        <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/clientes/lista}">Clientes</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <hr class="my-4 border-light opacity-10">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+                    <span class="small text-muted">Desenvolvido para WEB2.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <div th:fragment="scripts">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

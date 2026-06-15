@@ -4,7 +4,8 @@
 <body class="bg-light">
 <header th:replace="~{fragments/layout :: header}"></header>
 
-<div class="container pb-5">
+<div class="container pb-5 animate-fade-in">
+    <!-- Notificação / Mensagem de Sucesso -->
     <div th:if="${mensagem}" class="position-fixed bottom-0 end-0 p-4" style="z-index: 2000;">
         <div class="alert alert-premium bg-dark text-white border-0 shadow-lg fade show d-flex align-items-center p-3 mb-0" role="alert" style="min-width: 350px;">
             <div class="bg-success rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 45px; height: 45px;">
@@ -18,13 +19,13 @@
         </div>
     </div>
 
+    <!-- Cabeçalho Principal -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>
             <h2 class="fw-bold m-0 text-dark">Catálogo de Produtos</h2>
-            <p class="text-muted small m-0">Navegue pelas opções disponíveis e monte seu carrinho de compras</p>
+            <p class="text-muted small m-0">Navegue pelas opções premium e monte seu carrinho de compras</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-
             <a th:href="@{/produtos/form}" class="btn btn-secondary-custom d-inline-flex align-items-center gap-2" sec:authorize="hasRole('ADMIN')">
                 <i class="bi bi-plus-circle-fill text-success"></i> Novo Produto
             </a>
@@ -39,6 +40,7 @@
         </div>
     </div>
 
+    <!-- Filtro de Pesquisa -->
     <div class="card card-premium mb-5" style="border-radius: var(--radius-md);">
         <div class="card-body p-2 bg-white" style="border-radius: var(--radius-md);">
             <form th:action="@{/produtos/lista}" method="get" class="row g-2 align-items-center">
@@ -60,9 +62,11 @@
         </div>
     </div>
 
+    <!-- Grid de Produtos -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <div class="col" th:each="p : ${produtos}">
             <div class="card card-premium h-100">
+                <!-- Imagem do Produto -->
                 <div class="img-container-premium">
                     <img th:if="${p.imagem != null and !p.imagem.empty}"
                          th:src="@{'/img/' + ${p.imagem}}"
@@ -73,28 +77,33 @@
                     </div>
                 </div>
 
+                <!-- Corpo do Card -->
                 <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
                     <div>
-                        <span class="badge badge-custom badge-pf mb-2">#[[${p.id}]]</span>
-                        <h5 class="card-title fw-bold mb-3 text-truncate" th:text="${p.descricao}" th:title="${p.descricao}"></h5>
+                        <span class="badge badge-custom badge-pf mb-2">Ref. #[[${p.id}]]</span>
+                        <h5 class="card-title fw-bold mb-3 text-truncate text-dark" th:text="${p.descricao}" th:title="${p.descricao}"></h5>
                     </div>
 
                     <div>
-                        <div class="bg-light py-2 px-3 rounded-4 mb-4 d-inline-block">
-                            <small class="text-muted d-block small text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Preço Unitário</small>
-                            <span class="h4 fw-bold text-success mb-0"
-                                  th:text="'R$ ' + ${#numbers.formatDecimal(p.valor, 1, 'POINT', 2, 'COMMA')}"></span>
+                        <!-- Container de Preço -->
+                        <div class="price-container mb-4">
+                            <div class="text-center">
+                                <small class="text-muted d-block small text-uppercase fw-bold" style="font-size: 0.6rem; letter-spacing: 0.5px;">Preço</small>
+                                <span class="h4 fw-bold text-success mb-0"
+                                      th:text="'R$ ' + ${#numbers.formatDecimal(p.valor, 1, 'POINT', 2, 'COMMA')}"></span>
+                            </div>
                         </div>
 
+                        <!-- Form para Adicionar ao Carrinho -->
                         <form th:action="@{/produtos/adicionar}" method="post">
                             <input type="hidden" name="produto.id" th:value="${p.id}">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="product-quantity-selector d-flex align-items-center flex-grow-1">
+                            <div class="d-flex align-items-center justify-content-center gap-2">
+                                <div class="product-quantity-selector d-flex align-items-center flex-grow-1 justify-content-between">
                                     <button type="button" class="btn-qty" onclick="var input = this.parentNode.querySelector('input[type=number]'); if(input.value > 1) input.stepDown();">-</button>
-                                    <input type="number" name="quantidade" value="1" min="1" class="fw-bold flex-grow-1 text-center" style="width: 50px;">
+                                    <input type="number" name="quantidade" value="1" min="1" class="fw-bold text-center" style="width: 44px;">
                                     <button type="button" class="btn-qty" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                                 </div>
-                                <button class="btn btn-primary-custom px-3 py-2" type="submit" style="border-radius: var(--radius-md); box-shadow: none;" title="Adicionar ao carrinho">
+                                <button class="btn btn-primary-custom px-3 py-2 flex-shrink-0" type="submit" style="border-radius: var(--radius-md); box-shadow: none;" title="Adicionar ao carrinho">
                                     <i class="bi bi-cart-plus-fill fs-5"></i>
                                 </button>
                             </div>
@@ -104,6 +113,7 @@
             </div>
         </div>
 
+        <!-- Caso não haja produtos -->
         <div class="col-12" th:if="${#lists.isEmpty(produtos)}">
             <div class="card card-premium py-5 text-center text-muted">
                 <div class="card-body">
@@ -117,6 +127,7 @@
     </div>
 </div>
 
+<footer th:replace="~{fragments/layout :: footer}"></footer>
 <div th:replace="~{fragments/layout :: scripts}"></div>
 </body>
 </html>

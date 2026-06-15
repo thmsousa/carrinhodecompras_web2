@@ -4,9 +4,10 @@
 <body class="bg-light">
 <header th:replace="~{fragments/layout :: header}"></header>
 
-<main class="container pb-5">
+<main class="container pb-5 animate-fade-in">
     <div class="row">
         <div class="col-lg-6 mx-auto">
+            <!-- Cabeçalho -->
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <div>
                     <h3 class="fw-bold m-0 text-dark">Novo Endereço de Entrega</h3>
@@ -17,10 +18,12 @@
                 </a>
             </div>
 
+            <!-- Card de Formulário -->
             <div class="card card-premium shadow-sm">
                 <div class="card-body p-4">
                     <form th:action="@{/vendas/salvar-endereco}" th:object="${endereco}" method="post">
 
+                        <!-- Rótulo -->
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted text-uppercase mb-2">Rótulo / Tipo (Identificação)</label>
                             <input type="text" th:field="*{rotulo}" class="form-control form-control-custom"
@@ -28,8 +31,9 @@
                             <div class="invalid-feedback" th:errors="*{rotulo}"></div>
                         </div>
 
+                        <!-- Logradouro e Número -->
                         <div class="row mb-3">
-                            <div class="col-md-9">
+                            <div class="col-md-9 mb-3 mb-md-0">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-2">Rua / Logradouro</label>
                                 <input type="text" th:field="*{logradouro}" class="form-control form-control-custom" th:classappend="${#fields.hasErrors('logradouro')} ? 'is-invalid'" required>
                                 <div class="invalid-feedback" th:errors="*{logradouro}"></div>
@@ -41,8 +45,9 @@
                             </div>
                         </div>
 
+                        <!-- Bairro e Complemento -->
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3 mb-md-0">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-2">Bairro</label>
                                 <input type="text" th:field="*{bairro}" class="form-control form-control-custom" th:classappend="${#fields.hasErrors('bairro')} ? 'is-invalid'" required>
                                 <div class="invalid-feedback" th:errors="*{bairro}"></div>
@@ -53,8 +58,9 @@
                             </div>
                         </div>
 
+                        <!-- Cidade e CEP -->
                         <div class="row mb-4">
-                            <div class="col-md-7">
+                            <div class="col-md-7 mb-3 mb-md-0">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-2">Cidade</label>
                                 <input type="text" th:field="*{cidade}" class="form-control form-control-custom" th:classappend="${#fields.hasErrors('cidade')} ? 'is-invalid'" required>
                                 <div class="invalid-feedback" th:errors="*{cidade}"></div>
@@ -66,6 +72,7 @@
                             </div>
                         </div>
 
+                        <!-- Gravar -->
                         <button type="submit" class="btn btn-primary-custom w-100 py-3 fw-bold">
                             <i class="bi bi-save2-fill me-1"></i> Gravar Endereço
                         </button>
@@ -76,6 +83,7 @@
     </div>
 </main>
 
+<footer th:replace="~{fragments/layout :: footer}"></footer>
 <div th:replace="~{fragments/layout :: scripts}"></div>
 </body>
 </html>

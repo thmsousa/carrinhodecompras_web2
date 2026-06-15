@@ -95,5 +95,6 @@ public abstract class Pessoa implements Serializable {
     public void setVendas(List<Venda> vendas) {
         this.vendas = vendas;
     }
+
     public abstract String getNomeExibicao();
 }

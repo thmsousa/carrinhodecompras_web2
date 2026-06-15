@@ -4,17 +4,18 @@
 <body class="bg-light">
 <header th:replace="~{fragments/layout :: header}"></header>
 
-<main class="container pb-5">
+<main class="container pb-5 animate-fade-in">
     <div class="row">
         <div class="col-lg-8 mx-auto">
 
-            <div class="card card-premium">
+            <!-- Card de Cadastro -->
+            <div class="card card-premium shadow-sm">
                 <div class="card-body p-4 p-md-5">
 
                     <!-- Cabeçalho do Card -->
                     <div class="text-center mb-4">
-                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 60px; height: 60px;">
-                            <i class="bi bi-person-plus text-success fs-3"></i>
+                        <div class="bg-success-subtle text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 60px; height: 60px;">
+                            <i class="bi bi-person-plus-fill fs-3"></i>
                         </div>
                         <h3 class="fw-bold m-0 text-dark">Cadastro - Pessoa Física</h3>
                         <p class="text-muted small m-0">Preencha seus dados para criar uma conta</p>
@@ -26,8 +27,8 @@
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted text-uppercase mb-1">Nome Completo</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0 ps-3"><i class="bi bi-person text-muted"></i></span>
-                                <input type="text" th:field="*{nome}" class="form-control form-control-custom border-start-0 ps-2" placeholder="Ex: João da Silva" th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'">
+                                <span class="input-group-text input-group-text-custom"><i class="bi bi-person text-muted"></i></span>
+                                <input type="text" th:field="*{nome}" class="form-control form-control-custom ps-2" placeholder="Ex: João da Silva" th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                                 <div class="invalid-feedback" th:errors="*{nome}"></div>
                             </div>
                         </div>
@@ -37,16 +38,16 @@
                             <div class="col-md-6 mb-3 mb-md-0">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">CPF</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 ps-3"><i class="bi bi-card-text text-muted"></i></span>
-                                    <input type="text" th:field="*{cpf}" class="form-control form-control-custom border-start-0 ps-2" placeholder="000.000.000-00" th:classappend="${#fields.hasErrors('cpf')} ? 'is-invalid'">
+                                    <span class="input-group-text input-group-text-custom"><i class="bi bi-card-text text-muted"></i></span>
+                                    <input type="text" th:field="*{cpf}" class="form-control form-control-custom ps-2" placeholder="000.000.000-00" th:classappend="${#fields.hasErrors('cpf')} ? 'is-invalid'" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                                     <div class="invalid-feedback" th:errors="*{cpf}"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Telefone</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 ps-3"><i class="bi bi-telephone text-muted"></i></span>
-                                    <input type="text" th:field="*{telefone}" class="form-control form-control-custom border-start-0 ps-2" placeholder="(00) 00000-0000" th:classappend="${#fields.hasErrors('telefone')} ? 'is-invalid'">
+                                    <span class="input-group-text input-group-text-custom"><i class="bi bi-telephone text-muted"></i></span>
+                                    <input type="text" th:field="*{telefone}" class="form-control form-control-custom ps-2" placeholder="(00) 00000-0000" th:classappend="${#fields.hasErrors('telefone')} ? 'is-invalid'" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                                     <div class="invalid-feedback" th:errors="*{telefone}"></div>
                                 </div>
                             </div>
@@ -56,13 +57,13 @@
                         <div class="mb-4">
                             <label class="form-label small fw-bold text-muted text-uppercase mb-1">E-mail</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0 ps-3"><i class="bi bi-envelope text-muted"></i></span>
-                                <input type="email" th:field="*{email}" class="form-control form-control-custom border-start-0 ps-2" placeholder="joao@exemplo.com" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
+                                <span class="input-group-text input-group-text-custom"><i class="bi bi-envelope text-muted"></i></span>
+                                <input type="email" th:field="*{email}" class="form-control form-control-custom ps-2" placeholder="joao@exemplo.com" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                                 <div class="invalid-feedback" th:errors="*{email}"></div>
                             </div>
                         </div>
 
-                        <!-- SEÇÃO DE ENDEREÇO (Com o estilo idêntico ao seu padrão) -->
+                        <!-- SEÇÃO DE ENDEREÇO -->
                         <div class="border-top pt-3 mb-3">
                             <p class="small fw-bold text-success text-uppercase mb-3"><i class="bi bi-geo-alt-fill me-1"></i> Endereço de Entrega</p>
                         </div>
@@ -71,8 +72,8 @@
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted text-uppercase mb-1">Rótulo do Endereço</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0 ps-3"><i class="bi bi-tag text-muted"></i></span>
-                                <input type="text" th:field="*{enderecos[0].rotulo}" class="form-control form-control-custom border-start-0 ps-2" placeholder="Ex: Residencial, Trabalho, Casa do Pai" required>
+                                <span class="input-group-text input-group-text-custom"><i class="bi bi-tag text-muted"></i></span>
+                                <input type="text" th:field="*{enderecos[0].rotulo}" class="form-control form-control-custom ps-2" placeholder="Ex: Residencial, Trabalho, Casa do Pai" required style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                             </div>
                         </div>
 
@@ -81,8 +82,8 @@
                             <div class="col-md-9 mb-3 mb-md-0">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Rua / Logradouro</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 ps-3"><i class="bi bi-signpost text-muted"></i></span>
-                                    <input type="text" th:field="*{enderecos[0].logradouro}" class="form-control form-control-custom border-start-0 ps-2" placeholder="Ex: Av. JK, Rua 15" required>
+                                    <span class="input-group-text input-group-text-custom"><i class="bi bi-signpost text-muted"></i></span>
+                                    <input type="text" th:field="*{enderecos[0].logradouro}" class="form-control form-control-custom ps-2" placeholder="Ex: Av. JK, Rua 15" required style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -108,8 +109,8 @@
                             <div class="col-md-7 mb-3 mb-md-0">
                                 <label class="form-label small fw-bold text-muted text-uppercase mb-1">Cidade</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 ps-3"><i class="bi bi-map text-muted"></i></span>
-                                    <input type="text" th:field="*{enderecos[0].cidade}" class="form-control form-control-custom border-start-0 ps-2" placeholder="Ex: Palmas" required>
+                                    <span class="input-group-text input-group-text-custom"><i class="bi bi-map text-muted"></i></span>
+                                    <input type="text" th:field="*{enderecos[0].cidade}" class="form-control form-control-custom ps-2" placeholder="Ex: Palmas" required style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -120,32 +121,33 @@
 
                         <!-- DADOS DE ACESSO -->
                         <div class="border-top pt-3 mb-3">
-                            <p class="small fw-bold text-muted text-uppercase mb-2">Dados de Acesso</p>
+                            <p class="small fw-bold text-muted text-uppercase mb-2"><i class="bi bi-shield-lock-fill me-1 text-success"></i> Dados de Acesso</p>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-muted text-uppercase mb-1">Usuário</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0 ps-3"><i class="bi bi-shield-lock text-muted"></i></span>
-                                <input type="text" name="loginUsuario" class="form-control form-control-custom border-start-0 ps-2" placeholder="Escolha um nome de usuário" required>
+                                <span class="input-group-text input-group-text-custom"><i class="bi bi-person-lock text-muted"></i></span>
+                                <input type="text" name="loginUsuario" class="form-control form-control-custom ps-2" placeholder="Escolha um nome de usuário" required style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                             </div>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label small fw-bold text-muted text-uppercase mb-1">Senha</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0 ps-3"><i class="bi bi-lock text-muted"></i></span>
-                                <input type="password" name="senhaUsuario" class="form-control form-control-custom border-start-0 ps-2" placeholder="••••••••" required>
+                                <span class="input-group-text input-group-text-custom"><i class="bi bi-lock text-muted"></i></span>
+                                <input type="password" name="senhaUsuario" class="form-control form-control-custom ps-2" placeholder="••••••••" required style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                             </div>
                         </div>
 
                         <!-- BOTÃO ENVIAR -->
-                        <button type="submit" class="btn btn-success w-100 py-2.5 fw-bold text-white rounded-pill shadow-none d-flex align-items-center justify-content-center gap-2" style="background-color: #00a86b; border: none;">
-                            <i class="bi bi-check-circle"></i> Cadastrar
+                        <button type="submit" class="btn btn-primary-custom w-100 py-3 fw-bold text-white rounded-pill shadow-none d-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-check-circle-fill"></i> Concluir Cadastro
                         </button>
 
-                        <div class="text-center mt-3">
-                            <a th:href="@{/login}" class="text-muted small text-decoration-none">Já possui conta? Faça login</a>
+                        <div class="text-center mt-4 d-flex flex-column gap-2">
+                            <a th:href="@{/cadastro/pj}" class="text-primary small fw-bold text-decoration-none"><i class="bi bi-building me-1"></i> É uma empresa? Cadastre-se como Pessoa Jurídica</a>
+                            <a th:href="@{/login}" class="text-muted small text-decoration-none">Já possui conta? <strong class="text-success">Faça login</strong></a>
                         </div>
                     </form>
                 </div>
@@ -154,6 +156,7 @@
     </div>
 </main>
 
+<footer th:replace="~{fragments/layout :: footer}"></footer>
 <div th:replace="~{fragments/layout :: scripts}"></div>
 </body>
 </html>

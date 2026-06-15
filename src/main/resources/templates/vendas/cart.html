@@ -4,7 +4,8 @@
 <body class="bg-light">
 <header th:replace="~{fragments/layout :: header}"></header>
 
-<div class="container pb-5">
+<div class="container pb-5 animate-fade-in">
+    <!-- Alertas de Erro/Sucesso -->
     <div th:if="${mensagemErro}" class="alert alert-premium alert-danger border-0 shadow-sm mb-4 d-flex align-items-center">
         <div class="bg-danger rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 40px; height: 40px;">
             <i class="bi bi-exclamation-triangle-fill text-white fs-5"></i>
@@ -26,14 +27,17 @@
         <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
+    <!-- Layout de Duas Colunas -->
     <div class="row g-4">
+        <!-- Coluna dos Itens -->
         <div class="col-lg-8">
             <div class="card card-premium overflow-hidden mb-4" style="border-radius: var(--radius-lg);">
                 <div class="card-header bg-white border-0 py-3 px-4 d-flex align-items-center justify-content-between">
                     <h4 class="fw-bold m-0 text-dark">Itens no Carrinho</h4>
-                    <span class="badge bg-light text-muted border px-2 py-1" th:text="${venda != null ? #lists.size(venda.itens) : 0} + ' item(ns)'"></span>
+                    <span class="badge bg-light text-muted border px-3 py-2 rounded-pill" th:text="${venda != null ? #lists.size(venda.itens) : 0} + ' item(ns)'"></span>
                 </div>
 
+                <!-- Estado Vazio -->
                 <div class="card-body p-0 text-center py-5" th:if="${venda == null or venda.itens.isEmpty()}">
                     <i class="bi bi-cart-x display-1 text-muted opacity-25 d-block mb-3"></i>
                     <h5 class="fw-bold text-dark">Seu carrinho está vazio</h5>
@@ -43,6 +47,7 @@
                     </a>
                 </div>
 
+                <!-- Lista de Itens -->
                 <div th:if="${venda != null and !venda.itens.isEmpty()}" class="table-responsive">
                     <table class="table table-custom align-middle">
                         <thead>
@@ -76,7 +81,7 @@
                             <td class="text-center">
                                 <form th:action="@{/vendas/remover-item}" method="post">
                                     <input type="hidden" name="index" th:value="${stat.index}">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm border-0 rounded-circle p-2" title="Remover item">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm border-0 rounded-circle p-2 btn-action" title="Remover item">
                                         <i class="bi bi-trash fs-5"></i>
                                     </button>
                                 </form>
@@ -88,33 +93,38 @@
             </div>
         </div>
 
+        <!-- Coluna de Resumo / Checkout -->
         <div class="col-lg-4">
-            <div class="card checkout-card bg-success text-white border-0 p-4 rounded-4">
+            <div class="card checkout-card border-0 p-4 rounded-4 shadow-lg">
                 <div class="card-body">
-                    <h4 class="fw-bold mb-4">Resumo da Compra</h4>
+                    <h4 class="fw-bold mb-4 text-white">Resumo da Compra</h4>
 
-                    <div class="mb-4 text-center py-4 bg-white bg-opacity-10 rounded-4">
+                    <!-- Valor Total Destaque -->
+                    <div class="mb-4 text-center py-4 bg-white bg-opacity-10 rounded-4 border border-white border-opacity-10">
                         <small class="d-block text-uppercase fw-bold mb-1" style="font-size: 0.7rem; color: rgba(255,255,255,0.75);">Valor Total</small>
                         <h1 class="display-6 fw-bold mb-0 text-white" th:text="'R$ ' + ${#numbers.formatDecimal(venda != null ? venda.total() : 0, 1, 'POINT', 2, 'COMMA')}"></h1>
                     </div>
 
+                    <!-- Formulário de Finalização -->
                     <form th:action="@{/vendas/finalizar}" method="post">
+                        <!-- Endereço -->
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-uppercase mb-2 text-white">Endereço de Entrega</label>
-                            <select name="enderecoId" class="form-select border-0 shadow-sm py-2 px-3 text-dark rounded-3" required>
+                            <select name="enderecoId" class="form-select border-0 shadow-sm py-2.5 px-3 rounded-3 mb-2" required>
                                 <option value="" disabled selected>Escolha onde entregar...</option>
                                 <option th:each="end : ${enderecos}" th:value="${end.id}"
                                         th:text="'[' + ${end.rotulo} + '] ' + ${end.logradouro} + ', nº ' + ${end.numero}"></option>
                             </select>
 
-                            <a th:href="@{/vendas/novo-endereco}" class="btn btn-sm btn-dark mt-2 w-100 rounded-3 text-uppercase fw-bold d-flex align-items-center justify-content-center gap-1" style="font-size: 0.75rem; letter-spacing: 0.5px; height: 38px; background-color: #15201b; border: none;">
-                                <i class="bi bi-plus-circle"></i> + Cadastrar Novo Endereço
+                            <a th:href="@{/vendas/novo-endereco}" class="btn btn-sm btn-dark mt-2 w-100 rounded-3 text-uppercase fw-bold d-flex align-items-center justify-content-center gap-1" style="font-size: 0.75rem; letter-spacing: 0.5px; height: 40px; background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);">
+                                <i class="bi bi-plus-circle"></i> Cadastrar Novo Endereço
                             </a>
                         </div>
 
+                        <!-- Pagamento -->
                         <div class="mb-4">
                             <label class="form-label small fw-bold text-uppercase mb-2 text-white">Forma de Pagamento</label>
-                            <select name="formaPagamento" class="form-select border-0 shadow-sm py-2 px-3 text-dark rounded-3" required>
+                            <select name="formaPagamento" class="form-select border-0 shadow-sm py-2.5 px-3 rounded-3" required>
                                 <option value="" disabled selected>Forma de pagamento...</option>
                                 <option value="Pix">Pix</option>
                                 <option value="Cartão de Crédito">Cartão de Crédito</option>
@@ -123,9 +133,10 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-light btn-lg w-100 fw-bold text-success shadow py-3 rounded-pill border-0 d-flex align-items-center justify-content-center gap-2"
+                        <!-- Botão Finalizar -->
+                        <button type="submit" class="btn btn-primary-custom btn-lg w-100 fw-bold shadow py-3 rounded-pill border-0 d-flex align-items-center justify-content-center gap-2"
                                 th:disabled="${venda == null or venda.itens.isEmpty()}">
-                            <i class="bi bi-check-lg fs-4"></i>
+                            <i class="bi bi-shield-check fs-4"></i>
                             <span>FINALIZAR COMPRA</span>
                         </button>
                     </form>
@@ -135,6 +146,7 @@
     </div>
 </div>
 
+<footer th:replace="~{fragments/layout :: footer}"></footer>
 <div th:replace="~{fragments/layout :: scripts}"></div>
 </body>
 </html>
